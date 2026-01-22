@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.only(top: 65, left: 18, right: 18),
+        padding: EdgeInsets.only(top: ScreenHeight*0.070, left: ScreenWidth*0.040, right: ScreenWidth*0.040),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 5),
+                          SizedBox(width: ScreenWidth*0.014),
                           Expanded(
                             child: TextFormField(
                               controller: phoneController,

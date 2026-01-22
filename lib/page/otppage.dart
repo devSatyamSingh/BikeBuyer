@@ -1,4 +1,5 @@
 import 'package:bikebuyer/page/homepage.dart';
+import 'package:bikebuyer/page/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
@@ -196,7 +197,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                 if (otpCode == validOtp) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => HomePage()),
+                    MaterialPageRoute(builder: (_) => HomeTabs()),
                   );
                 } else {
                   setState(() {
@@ -263,7 +264,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.black54,
-                        fontSize: 13),
+                        fontSize: ScreenWidth*0.030),
                   ),
                 ],
               ),

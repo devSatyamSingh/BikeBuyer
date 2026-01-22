@@ -6,14 +6,16 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Drawer(
       child: Column(
         children: [
           Container(
-            height: 170,
+            height: screenHeight*0.18,
             width: double.infinity,
-            padding: EdgeInsets.only(left: 30, top: 35),
-            color: Colors.cyan,
+            padding: EdgeInsets.only(left: screenWidth*0.078, top: screenHeight*0.048),
+            color: Colors.purple,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -21,14 +23,14 @@ class CustomDrawer extends StatelessWidget {
                 CircleAvatar(
                   radius: 28,
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.person, size: 35),
+                  child: Icon(Icons.person, size: screenWidth*0.090),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: screenHeight*0.012),
                 Text(
                   "Welcome to BikeBuyer",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: screenWidth*0.034,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -49,24 +51,24 @@ class CustomDrawer extends StatelessWidget {
           drawerTile("Dealer Near Me"),
           drawerTile("Find Services Center"),
           drawerTile("Login"),
-          SizedBox(height: 30,),
+          SizedBox(height: screenHeight*0.020,),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth*0.044),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 "Connect with us",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: screenWidth*0.037,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: screenHeight*0.013),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.symmetric(vertical: 12),
+            margin: EdgeInsets.symmetric(horizontal: screenWidth*0.020),
+            padding: EdgeInsets.symmetric(vertical: screenHeight*0.020),
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(10),
@@ -74,25 +76,20 @@ class CustomDrawer extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                FaIcon(FontAwesomeIcons.facebook,
-                    color: Colors.blue),
-                FaIcon(FontAwesomeIcons.instagram,
-                    color: Colors.pink),
-                FaIcon(FontAwesomeIcons.twitter,
-                    color: Colors.lightBlue),
-                FaIcon(FontAwesomeIcons.youtube,
-                    color: Colors.red),
+                FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
+                FaIcon(FontAwesomeIcons.instagram, color: Colors.pink),
+                FaIcon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
+                FaIcon(FontAwesomeIcons.youtube, color: Colors.red),
               ],
             ),
           ),
-
-          SizedBox(height: 20),
+          SizedBox(height: screenHeight*0.020),
         ],
       ),
     );
   }
 
-  // 🔥 Reusable tile
+
   Widget drawerTile(String title) {
     return ListTile(
       title: Text(title),

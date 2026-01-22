@@ -1,3 +1,4 @@
+import 'package:bikebuyer/page/notificationpage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -39,29 +40,29 @@ class _HomePageState extends State<HomePage> {
     {
       "name": "Bajaj Pulsar 220F",
       "price": "₹1.34 Lakh",
-      "img": "assets/images/pulsar.webp",
+      "img": "assets/images/pulsar1.png",
       "cc": "220 cc",
       "km": "40 kmpl",
     },
   ];
 
   List<String> bannerImages = [
-    "assets/images/banner1.jpg",
-    "assets/images/banner2.jpg",
-    "assets/images/banner3.jpg",
+    "assets/images/banner4.jpg",
+    "assets/images/banner5.png",
+    "assets/images/bannerhero.jpg",
   ];
 
   List bikeList = [
     {
       "name": "Hero Splendor Plus",
       "price": "₹74,000",
-      "img": "assets/images/hero.jpg",
+      "img": "assets/images/hero1.webp",
     },
     {"name": "TVS Raider", "price": "₹80,750", "img": "assets/images/tvs.jpg"},
     {
       "name": "Bajaj Pulsar 125",
       "price": "₹85,000",
-      "img": "assets/images/pulsar.webp",
+      "img": "assets/images/pulsar1.png",
     },
     {
       "name": "Honda Shine",
@@ -73,6 +74,21 @@ class _HomePageState extends State<HomePage> {
       "price": "₹1.20 Lakh",
       "img": "assets/images/R15.webp",
     },
+  ];
+
+  List brands = [
+    {"name": "Bajaj", "img": "assets/images/Bajajlogo.webp"},
+    {"name": "Hero", "img": "assets/images/herologo.png"},
+    {"name": "Kawasaki", "img": "assets/images/kawa2logo.webp"},
+    {"name": "Honda", "img": "assets/images/hondalogo3.jpg"},
+    {"name": "KTM", "img": "assets/images/ktmlogo.png"},
+    {"name": "Royal Enfield", "img": "assets/images/royalnewlogo.png"},
+    {"name": "TVS", "img": "assets/images/tvslogo3.png"},
+    {"name": "Triumph", "img": "assets/images/triumplogo.webp"},
+    {"name": "Yamaha", "img": "assets/images/yamahalogo.webp"},
+    {"name": "BMW", "img": "assets/images/bmwlogo.png"},
+    {"name": "Ola", "img": "assets/images/olalogo2.png"},
+    {"name": "Ducati", "img": "assets/images/Ducatilogo.png"},
   ];
 
   @override
@@ -111,35 +127,45 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: 60,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Row(
-          children: [
-            Icon(
-              Icons.location_on,
-              size: 18,
-              color: Colors.cyan,
+        titleSpacing: 5,
+        leadingWidth: 50,
+        leading: Padding(
+          padding: EdgeInsets.only(left: w*0.020),
+          child: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.black),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
             ),
-            SizedBox(width: 6),
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(Icons.location_on, size: w*0.040, color: Colors.purple),
+            SizedBox(width: w*0.014),
             SizedBox(
-              width: 80,
+              width: w*0.18,
               child: TextField(
                 decoration: InputDecoration(
                   isDense: true,
                   hintText: "Enter city",
                   hintStyle: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey.shade700,
+                    fontSize: w*0.035,
+                    color: Colors.grey.shade700,
                   ),
                   border: UnderlineInputBorder(
-                   borderSide: BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.cyan),
+                    borderSide: BorderSide(color: Colors.purple),
                   ),
                 ),
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: w*0.030),
               ),
             ),
           ],
@@ -147,19 +173,74 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications_none, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
           ),
           Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: CircleAvatar(
-              radius: 17,
-              backgroundColor: Colors.grey.shade300,
-              child: Icon(Icons.person, size: 20, color: Colors.black),
+            padding: EdgeInsets.only(right: w*0.060),
+            child: PopupMenuButton(
+              color: Colors.white,
+              offset: Offset(10, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              itemBuilder: (context) => <PopupMenuEntry<int>>[
+                PopupMenuItem(
+                  enabled: false,
+                  value: 0,
+                  child: SizedBox(
+                    height: h*0.075,
+                    width: w*0.27,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            "Hi Satyam",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: w*0.040,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: h*0.005),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 17,
+                              color: Colors.redAccent,
+                            ),
+                            SizedBox(width: w*0.0017),
+                            Text(
+                              "Ayodhya, UP",
+                              style: TextStyle(
+                                fontSize: w*0.035,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              child: CircleAvatar(
+                radius: 17,
+                backgroundColor: Colors.grey.shade300,
+                child: Icon(Icons.person, size: w*0.050, color: Colors.black),
+              ),
             ),
           ),
         ],
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -167,7 +248,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 48,
+                height: h*0.05,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
@@ -180,9 +261,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: h*0.0150),
               SizedBox(
-                height: 180,
+                height: h*0.21,
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
@@ -203,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: h*0.0115),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -211,8 +292,8 @@ class _HomePageState extends State<HomePage> {
                   (index) => AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     margin: EdgeInsets.symmetric(horizontal: 4),
-                    height: 6,
-                    width: currentIndex == index ? 13 : 6,
+                    height: h*0.008,
+                    width: currentIndex == index ? 12 : 6,
                     decoration: BoxDecoration(
                       color: currentIndex == index ? Colors.black : Colors.grey,
                       borderRadius: BorderRadius.circular(10),
@@ -220,12 +301,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: h*0.020),
               Text(
                 "Popular Bikes",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: w*0.043, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 14),
+              SizedBox(height: h*0.0135),
               GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -256,7 +337,7 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.all(8),
                               child: Image.asset(
                                 bike["img"],
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ),
@@ -279,45 +360,45 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: h*0.004),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
                               children: [
-                                Icon(Icons.speed, size: 14),
-                                SizedBox(width: 4),
+                                Icon(Icons.speed, size: w*0.034),
+                                SizedBox(width: w*0.012),
                                 Text(bike["cc"]),
-                                SizedBox(width: 10),
-                                Icon(Icons.local_gas_station, size: 14),
-                                SizedBox(width: 4),
+                                SizedBox(width: w*0.025),
+                                Icon(Icons.local_gas_station, size: w*0.035),
+                                SizedBox(width: w*0.011),
                                 Text(bike["km"]),
                               ],
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: h*0.0120),
                         ],
                       ),
                     ),
                   );
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: h*0.023),
               Text(
                 "The Most Sell Bikes Brands",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: w*0.047, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 12),
+              SizedBox(height: h*0.0125),
               SizedBox(
-                height: 240,
+                height: h*0.26,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: bikeList.length,
                   itemBuilder: (context, index) {
                     var bike = bikeList[index];
                     return Container(
-                      height: 170,
-                      width: 280,
-                      margin: EdgeInsets.only(right: 12),
+                      height: h*0.190,
+                      width: w*0.67,
+                      margin: EdgeInsets.only(right: w*0.025),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -329,8 +410,8 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 160,
-                            width: 275,
+                            height: h*0.170,
+                            width: w*0.66,
                             padding: EdgeInsets.all(8),
                             child: Image.asset(
                               bike["img"],
@@ -346,8 +427,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
+                              horizontal: w*0.026,
+                              vertical: h*0.005,
                             ),
                             child: Text(
                               bike["price"],
@@ -358,12 +439,12 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: w*0.026),
                             child: Text(
                               "View Bikes Details",
                               style: TextStyle(
                                 color: Colors.blue,
-                                fontSize: 15,
+                                fontSize: w*0.034,
                               ),
                             ),
                           ),
@@ -373,7 +454,37 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: h*0.022),
+              Text(
+                "Popular Brands",
+                style: TextStyle(fontSize: w*0.043, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: h*0.0130),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: brands.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 0.95,
+                ),
+                itemBuilder: (context, index) {
+                  var brand = brands[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(25),
+                      child: Image.asset(brand["img"], fit: BoxFit.cover),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: h*0.0120),
             ],
           ),
         ),

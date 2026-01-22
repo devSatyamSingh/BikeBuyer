@@ -1,4 +1,5 @@
 
+import 'package:bikebuyer/page/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:bikebuyer/page/signuppage.dart';
 import 'package:flutter/material.dart';
