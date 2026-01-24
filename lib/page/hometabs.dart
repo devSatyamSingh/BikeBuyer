@@ -18,7 +18,7 @@ class _HomeTabsState extends State<HomeTabs> {
 
   List Pages = [
     HomePage(),
-    Wishlist(),
+    WishlistPage(),
     BikeSell(),
     UserProfile(),
   ];

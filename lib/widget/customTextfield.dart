@@ -40,14 +40,14 @@ Widget satyamField({
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
-                child: Icon(icon, color: Colors.cyanAccent.shade700),
+                child: Icon(icon, color: Colors.deepPurple.shade600),
               ),
               Expanded(
                 child: TextFormField(
                   controller: controller,
                   keyboardType: keyboard,
                   obscureText: obscure,
-                  cursorColor: Colors.cyan,
+                  cursorColor: Colors.deepPurple,
                   maxLength: maxLength,
                   onChanged: onChanged,
                   validator: validator,

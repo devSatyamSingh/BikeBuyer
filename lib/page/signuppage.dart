@@ -1,4 +1,5 @@
 import 'package:bikebuyer/page/homepage.dart';
+import 'package:bikebuyer/page/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:bikebuyer/page/otppage.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +195,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         },
                         child: Icon(Icons.my_location, color: Colors.black87),
                       ),
-                      prefixIcon: Icon(Icons.location_on, color: Colors.cyan),
+                      prefixIcon: Icon(Icons.location_pin, color: Colors.deepPurple),
 
                       filled: true,
                       fillColor: Colors.grey.shade100,
@@ -228,7 +229,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       cityController.selection = TextSelection.fromPosition(
                         TextPosition(offset: prediction.description!.length),
                       );
-
                       checkForm();
                     },
                   ),
@@ -253,7 +253,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         cityController.text.isNotEmpty) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => HomePage()),
+                        MaterialPageRoute(builder: (_) => HomeTabs()),
                       );
                     }
                   },
@@ -265,22 +265,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       gradient: isFormValid
                           ? LinearGradient(
                               colors: [
-                                Color(0xff6BCFD1),
-                                Color(0xff86C7E7),
-                                Color(0xff86C7E7),
+                                Color(0xffCA48CE),
+                                Color(0xff7A34BD),
+                                Color(0xffC98BBE),
                               ],
                             )
                           : null,
                       borderRadius: BorderRadius.circular(6),
-                      boxShadow: isFormValid
-                          ? [
-                              BoxShadow(
-                                color: Colors.cyan.withOpacity(0.3),
-                                blurRadius: 5,
-                                offset: const Offset(0, 4),
-                              ),
-                            ]
-                          : [],
                     ),
                     child: Center(
                       child: Text(

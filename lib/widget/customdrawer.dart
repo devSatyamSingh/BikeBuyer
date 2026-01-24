@@ -50,8 +50,7 @@ class CustomDrawer extends StatelessWidget {
           drawerTile("Find Dealers"),
           drawerTile("Dealer Near Me"),
           drawerTile("Find Services Center"),
-          drawerTile("Login"),
-          SizedBox(height: screenHeight*0.020,),
+          SizedBox(height: screenHeight*0.015,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth*0.044),
             child: Align(
@@ -65,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: screenHeight*0.013),
+          SizedBox(height: screenHeight*0.011),
           Container(
             margin: EdgeInsets.symmetric(horizontal: screenWidth*0.020),
             padding: EdgeInsets.symmetric(vertical: screenHeight*0.020),
@@ -92,8 +91,9 @@ class CustomDrawer extends StatelessWidget {
 
   Widget drawerTile(String title) {
     return ListTile(
-      title: Text(title),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16),
+      visualDensity: VisualDensity(vertical: -2),
+      title: Text(title, style: TextStyle(fontSize: 16),),
+      trailing: Icon(Icons.arrow_forward_ios, size: 15),
       onTap: () {},
     );
   }

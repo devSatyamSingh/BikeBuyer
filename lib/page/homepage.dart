@@ -254,9 +254,10 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
+                  cursorColor: Colors.purple,
                   decoration: InputDecoration(
                     hintText: "Search bikes...",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search, color: Colors.purple,),
                     border: InputBorder.none,
                   ),
                 ),

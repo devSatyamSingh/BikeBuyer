@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           Expanded(
                             child: TextFormField(
                               controller: phoneController,
-                              cursorColor: Colors.cyanAccent,
+                              cursorColor: Colors.purple,
                               keyboardType: TextInputType.number,
                               maxLength: 10,
                               textAlignVertical: TextAlignVertical.center,
@@ -135,9 +135,9 @@ class _LoginPageState extends State<LoginPage> {
                     gradient: isPhoneValid
                         ? LinearGradient(
                       colors: [
-                        Color(0xff6BCFD1),
-                        Color(0xff86C7E7),
-                        Color(0xff86C7E7),
+                        Color(0xffCA48CE),
+                        Color(0xff7A34BD),
+                        Color(0xffC98BBE),
                       ],
                     )
                    : null,

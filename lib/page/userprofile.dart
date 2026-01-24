@@ -1,6 +1,9 @@
+import 'package:bikebuyer/profilepage/Profilesettings.dart';
+import 'package:bikebuyer/profilepage/aboutuspage.dart';
 import 'package:bikebuyer/profilepage/editprofile.dart';
 import 'package:bikebuyer/profilepage/privacy_policy.dart';
 import 'package:bikebuyer/profilepage/terms_condi.dart';
+import 'package:bikebuyer/widget/dialogbox.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
@@ -28,7 +31,7 @@ class _UserProfileState extends State<UserProfile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(screenWidth * 0.0070),
+              padding: EdgeInsets.all(screenWidth * 0.0065),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.purple.shade100,
@@ -40,16 +43,16 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
               child: CircleAvatar(
-                radius: screenWidth * 0.12,
+                radius: screenWidth * 0.11,
                 backgroundColor: Colors.grey.shade200,
                 child: Icon(
                   Icons.person,
-                  size: screenWidth * 0.18,
+                  size: screenWidth * 0.16,
                   color: Colors.purple,
                 ),
               ),
             ),
-            SizedBox(height: screenHeight * 0.012),
+            SizedBox(height: screenHeight * 0.009),
             Text(
               "Satyam Singh",
               style: TextStyle(
@@ -68,18 +71,17 @@ class _UserProfileState extends State<UserProfile> {
             SizedBox(height: screenHeight * 0.0200),
             profileTile(
               context: context,
-              icon: IconlyLight.edit,
-              title: "Edit Profile",
+              icon: IconlyLight.profile,
+              title: "Profile Settings",
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfile(),
+                    builder: (context) => ProfileSettings(),
                   ),
                 );
               },
             ),
-            SizedBox(height: screenHeight * 0.0100),
             profileTile(
               context: context,
               icon: IconlyLight.document,
@@ -88,12 +90,11 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TermsCondPage(),
+                    builder: (context) => TermsConditionPage(),
                   ),
                 );
               },
             ),
-            SizedBox(height: screenHeight * 0.0100),
             profileTile(
               context: context,
               icon: IconlyLight.shield_done,
@@ -102,19 +103,31 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PrivacyPolicy(),
+                    builder: (context) => PrivacyPolicyPage(),
                   ),
                 );
               },
             ),
-            SizedBox(height: screenHeight * 0.01),
+            profileTile(
+              context: context,
+              icon: IconlyLight.activity,
+              title: "About Us",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AboutUsPage(),
+                  ),
+                );
+              },
+            ),
             profileTile(
               context: context,
               icon: IconlyLight.logout,
               title: "Logout",
               isLogout: true,
               onTap: () {
-                // logout ka option
+                showLogoutDialog(context);
               },
             ),
           ],
@@ -138,10 +151,10 @@ Widget profileTile({
     onTap: onTap,
     child: Container(
       margin: EdgeInsets.only(
-        bottom: screenHeight * 0.013,
+        bottom: screenHeight * 0.015,
       ),
       padding: EdgeInsets.symmetric(
-        vertical: screenHeight * 0.020,
+        vertical: screenHeight * 0.015,
         horizontal: screenWidth * 0.04,
       ),
       decoration: BoxDecoration(

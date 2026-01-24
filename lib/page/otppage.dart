@@ -8,7 +8,7 @@ import 'dart:async';
 
 class OtpVerifyPage extends StatefulWidget {
   final String phone;
-   OtpVerifyPage({required this.phone});
+  OtpVerifyPage({required this.phone});
 
   @override
   State<OtpVerifyPage> createState() => _OtpVerifyPageState();
@@ -65,21 +65,23 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     final ScreenWidth = MediaQuery.of(context).size.width;
     final ScreenHeight = MediaQuery.of(context).size.height;
 
-    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
+    const focusedBorderColor = Color(0xff7A34BD);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
-    const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
+    const borderColor = Color(0xff7A34BD);
 
     final defaultPinTheme = PinTheme(
       width: 58,
       height: 57,
-      textStyle: const TextStyle(fontSize: 23,
+      textStyle: const TextStyle(
+        fontSize: 23,
         color: Color.fromRGBO(30, 60, 87, 1),
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: borderColor),
+        border: Border.all(color: borderColor.withOpacity(0.4)),
       ),
     );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -89,14 +91,13 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
           children: [
             SizedBox(height: ScreenHeight*0.060),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(IconlyBold.arrow_left,)),
-                SizedBox(width: 14,),
+                    child: Icon(IconlyBold.arrow_left)),
+                SizedBox(width: 14),
                 Text(
                   "OTP Verification",
                   style: TextStyle(
@@ -108,18 +109,23 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
             ),
             SizedBox(height: ScreenHeight*0.010),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   " OTP has been Sent to +91 ${widget.phone}",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.grey.shade700),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.grey.shade700),
                 ),
                 SizedBox(width: 8),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                    child: Icon(IconlyBold.edit, size: ScreenWidth*0.040, color: Colors.black87)),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    child: Icon(IconlyBold.edit,
+                        size: ScreenWidth*0.040,
+                        color: Colors.black87)),
               ],
             ),
             SizedBox(height: ScreenHeight*0.025),
@@ -147,7 +153,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                       margin: EdgeInsets.only(bottom: 9),
                       width: 22,
                       height: 1,
-                      color: focusedBorderColor,
+                      color: Color(0xff7A34BD),
                     ),
                   ],
                 ),
@@ -165,7 +171,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                   ),
                 ),
                 errorPinTheme: defaultPinTheme.copyBorderWith(
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(color: Color(0xff7A34BD)),
                 ),
               ),
             ),
@@ -173,11 +179,13 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
               Padding(
                 padding: EdgeInsets.only(top: ScreenHeight*0.0125),
                 child: Center(
-                  child: Text(errorText, style: TextStyle(color: Colors.red, fontSize: 12,),
+                  child: Text(
+                    errorText,
+                    style: TextStyle(color: Colors.red, fontSize: 12),
                   ),
                 ),
               ),
-            SizedBox(height: ScreenHeight*0.035,),
+            SizedBox(height: ScreenHeight*0.035),
             GestureDetector(
               onTap: isOtpComplete ? () {
                 if (otpCode.isEmpty) {
@@ -217,11 +225,12 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     gradient: isOtpComplete
                         ? LinearGradient(
                       colors: [
-                        Color(0xff6BCFD1),
-                        Color(0xff86C7E7),
-                        Color(0xff86C7E7),
+                        Color(0xffCA48CE),
+                        Color(0xff7A34BD),
+                        Color(0xffC98BBE),
                       ],
-                    ) : null,
+                    )
+                    : null,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
@@ -237,14 +246,19 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
               ),
             ),
             SizedBox(height: 7),
-            Center(child: Text('otp 1234 hai', style: TextStyle(fontSize: 10, color: Colors.grey),)),
+            Center(
+                child: Text('otp 1234 hai',
+                    style:
+                    TextStyle(fontSize: 10, color: Colors.grey))),
             SizedBox(height: 15),
             Center(
               child: Column(
                 children: [
                   Text(
                     "Didn't receive OTP?",
-                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: ScreenHeight*0.005),
                   canResend
@@ -256,7 +270,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                       "Resend OTP",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: Colors.cyanAccent),
+                          color: Colors.purple),
                     ),
                   )
                       : Text(
@@ -272,6 +286,6 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
           ],
         ),
       ),
-      );
-    }
+    );
+  }
 }
