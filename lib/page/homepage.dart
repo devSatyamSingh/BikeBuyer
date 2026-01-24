@@ -1,6 +1,13 @@
 import 'package:bikebuyer/page/notificationpage.dart';
+import 'package:bikebuyer/hometabitems/commutertab.dart';
+import 'package:bikebuyer/hometabitems/latestbikescooters.dart';
+import 'package:bikebuyer/hometabitems/scootertab.dart';
+import 'package:bikebuyer/hometabitems/sportsbiketab.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
 
 import '../widget/customdrawer.dart';
 
@@ -14,6 +21,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
+
+  final TextEditingController locationController = TextEditingController();
+  final FocusNode locationFocus = FocusNode();
+
 
   List bikes = [
     {
@@ -130,7 +141,7 @@ class _HomePageState extends State<HomePage> {
         titleSpacing: 5,
         leadingWidth: 50,
         leading: Padding(
-          padding: EdgeInsets.only(left: w*0.020),
+          padding: EdgeInsets.only(left: w * 0.020),
           child: Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.menu, color: Colors.black),
@@ -140,39 +151,39 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(Icons.location_on, size: w*0.040, color: Colors.purple),
-            SizedBox(width: w*0.014),
-            SizedBox(
-              width: w*0.18,
-              child: TextField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: "Enter city",
-                  hintStyle: TextStyle(
-                    fontSize: w*0.035,
-                    color: Colors.grey.shade700,
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple),
-                  ),
+        title: GestureDetector(
+          onTap: () {
+            showLocationBottomSheet(context);
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.location_on, size: 18, color: Colors.purple),
+              const SizedBox(width: 6),
+              Text(
+                locationController.text.isEmpty
+                    ? "Select City"
+                    : locationController.text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: w * 0.038,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
                 ),
-                style: TextStyle(fontSize: w*0.030),
               ),
-            ),
-          ],
+              SizedBox(width: 4),
+              Icon(Icons.keyboard_arrow_down, size: 25),
+            ],
+          ),
         ),
+
+
+
+        /// 🔔 NOTIFICATION + 👤 PROFILE
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_none, color: Colors.black),
+            icon: const Icon(Icons.notifications_none, color: Colors.black),
             onPressed: () {
               Navigator.push(
                 context,
@@ -181,10 +192,10 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           Padding(
-            padding: EdgeInsets.only(right: w*0.060),
+            padding: EdgeInsets.only(right: w * 0.060),
             child: PopupMenuButton(
               color: Colors.white,
-              offset: Offset(10, 50),
+              offset: const Offset(10, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -193,35 +204,32 @@ class _HomePageState extends State<HomePage> {
                   enabled: false,
                   value: 0,
                   child: SizedBox(
-                    height: h*0.075,
-                    width: w*0.27,
+                    height: h * 0.075,
+                    width: w * 0.27,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(
-                          child: Text(
-                            "Hi Satyam",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: w*0.040,
-                              color: Colors.black54,
-                            ),
+                        Text(
+                          "Hi Satyam",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: w * 0.040,
+                            color: Colors.black54,
                           ),
                         ),
-                        SizedBox(height: h*0.005),
+                        const SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 17,
-                              color: Colors.redAccent,
-                            ),
-                            SizedBox(width: w*0.0017),
+                            const Icon(Icons.location_on,
+                                size: 16, color: Colors.redAccent),
+                            const SizedBox(width: 4),
                             Text(
-                              "Ayodhya, UP",
+                              locationController.text.isEmpty
+                                  ? "Select city"
+                                  : locationController.text,
                               style: TextStyle(
-                                fontSize: w*0.035,
+                                fontSize: w * 0.032,
                                 color: Colors.black54,
                               ),
                             ),
@@ -235,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               child: CircleAvatar(
                 radius: 17,
                 backgroundColor: Colors.grey.shade300,
-                child: Icon(Icons.person, size: w*0.050, color: Colors.black),
+                child: Icon(Icons.person, size: w * 0.050, color: Colors.black),
               ),
             ),
           ),
@@ -485,11 +493,164 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              SizedBox(height: h*0.0120),
+              SizedBox(height: h*0.0180),
+              Text(
+                "The Most Searched Bikes",
+                style: TextStyle(fontSize: w * 0.043, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: h * 0.009),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: DefaultTabController(
+                  length: 4,
+                  child: Column(
+                    children: [
+                      TabBar(
+                        isScrollable: true,
+                        tabAlignment: TabAlignment.start,
+                        dividerColor: Colors.white,
+                        labelColor: Colors.black,
+                        labelStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        unselectedLabelColor: Colors.grey,
+                        indicatorColor: Colors.purple,
+                        tabs: [
+                          Tab(text: "Latest Bikes & Scooters"),
+                          Tab(text: "Commuter Bikes"),
+                          Tab(text: "Sports Bikes"),
+                          Tab(text: "Scooter Bikes"),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      SizedBox(
+                        height: h * 0.29,
+                        child: TabBarView(
+                          children:[
+                            LatestBikeScooterTab(),
+                            CommuterBikeTab(),
+                            SportsBikeTab(),
+                            ScooterTab(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: h * 0.020),
             ],
           ),
         ),
       ),
     );
   }
+
+  void showLocationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      height: 4,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.purple,
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text("Select your city", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),),
+                  SizedBox(height: 12),
+                  GooglePlaceAutoCompleteTextField(
+                    textEditingController: locationController,
+                    googleAPIKey: "AIzaSyDJ7qpCw3pf-zN-fY1DqWZ4HDK0Dmi62C4",
+                    countries: ["in"],
+                    isLatLngRequired: false,
+                    debounceTime: 600,
+                    inputDecoration: InputDecoration(
+                      hintText: "Search city",
+                      prefixIcon: const Icon(Icons.search),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    itemClick: (prediction) {
+                      setState(() {
+                        locationController.text = prediction.description!;
+                      });
+                      Navigator.pop(context);
+                    },
+                    getPlaceDetailWithLatLng: (prediction) {},
+                  ),
+                  SizedBox(height: 16),
+                  ListTile(
+                    leading: Icon(
+                      Icons.my_location,
+                      color: Colors.purple,
+                    ),
+                    title: const Text("Use current location"),
+                    onTap: () async {
+                      await detectCurrentLocation();
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> detectCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return;
+    }
+
+    if (permission == LocationPermission.deniedForever) return;
+
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+    Placemark place = placemarks.first;
+    String city = place.locality ?? "";
+    String state = place.administrativeArea ?? "";
+
+    setState(() {
+      locationController.text = "$city, $state";
+    });
+  }
+
 }

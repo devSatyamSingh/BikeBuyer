@@ -1,3 +1,12 @@
+import 'package:bikebuyer/draweritems/OfferPage.dart';
+import 'package:bikebuyer/draweritems/ServicesCenterPage.dart';
+import 'package:bikebuyer/draweritems/dealernearme.dart';
+import 'package:bikebuyer/draweritems/finddealerpage.dart';
+import 'package:bikebuyer/page/hometabs.dart';
+import 'package:bikebuyer/draweritems/Electricbikelist.dart';
+import 'package:bikebuyer/draweritems/bikelist.dart';
+import 'package:bikebuyer/draweritems/scooterlist.dart';
+import 'package:bikebuyer/draweritems/superbikelist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -41,15 +50,15 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-          drawerTile("Home"),
-          drawerTile("Bikes"),
-          drawerTile("Scooters"),
-          drawerTile("Electric Bikes"),
-          drawerTile("Super Bikes"),
-          drawerTile("Offers"),
-          drawerTile("Find Dealers"),
-          drawerTile("Dealer Near Me"),
-          drawerTile("Find Services Center"),
+          drawerTile(context, "Home", HomeTabs()),
+          drawerTile(context, "Bikes", BikeListPage()),
+          drawerTile(context, "Scooters", ScooterListPage()),
+          drawerTile(context, "Electric Bikes", ElectricBikeLIst()),
+          drawerTile(context, "Super Bikes", SuperBikeList()),
+          drawerTile( context, "Offers", OfferPage()),
+          drawerTile(context, "Find Dealers", Finddealerpage()),
+          drawerTile(context, "Dealer Near Me", DealerNearPage()),
+          drawerTile(context, "Find Services Center", ServicesCenterPage()),
           SizedBox(height: screenHeight*0.015,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth*0.044),
@@ -89,12 +98,19 @@ class CustomDrawer extends StatelessWidget {
   }
 
 
-  Widget drawerTile(String title) {
+  Widget drawerTile(BuildContext context, String title, Widget page) {
     return ListTile(
-      visualDensity: VisualDensity(vertical: -2),
-      title: Text(title, style: TextStyle(fontSize: 16),),
-      trailing: Icon(Icons.arrow_forward_ios, size: 15),
-      onTap: () {},
+      visualDensity: const VisualDensity(vertical: -2),
+      title: Text(title, style: const TextStyle(fontSize: 16)),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 15),
+      onTap: () {
+        Navigator.pop(context); // close drawer
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => page),
+        );
+      },
     );
   }
 }
+
