@@ -10,11 +10,6 @@ class ScooterListPage extends StatefulWidget {
 class _ScooterListPageState extends State<ScooterListPage> {
   final List<Map<String, String>> bikes = [
     {
-      "name": "Pulsar 150 cc",
-      "price": "₹1.30 Lakh",
-      "img": "assets/images/pulsar1.png",
-    },
-    {
       "name": "Yamaha R15 V4",
       "price": "₹1.82 Lakh",
       "img": "assets/images/R15.webp",
@@ -23,6 +18,11 @@ class _ScooterListPageState extends State<ScooterListPage> {
       "name": "KTM Duke 250",
       "price": "₹2.82 Lakh",
       "img": "assets/images/ktm2.webp",
+    },
+    {
+      "name": "Pulsar 150 cc",
+      "price": "₹1.30 Lakh",
+      "img": "assets/images/pulsar1.png",
     },
     {
       "name": "Hero Splendor Plus",
@@ -64,8 +64,8 @@ class _ScooterListPageState extends State<ScooterListPage> {
               children: [
                 Image.asset(
                   bike["img"]!,
-                  height: 280,
-                  width: 380,
+                  height: 275,
+                  width: 375,
                   fit: BoxFit.cover,
                 ),
                 Padding(

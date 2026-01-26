@@ -20,14 +20,14 @@ class _ElectricBikeLIstState extends State<ElectricBikeLIst> {
       "img": "assets/images/R15.webp",
     },
     {
-      "name": "KTM Duke 250",
-      "price": "₹2.82 Lakh",
-      "img": "assets/images/ktm2.webp",
-    },
-    {
       "name": "Hero Splendor Plus",
       "price": "₹82,000 Lakh",
       "img": "assets/images/hero1.webp",
+    },
+    {
+      "name": "KTM Duke 250",
+      "price": "₹2.82 Lakh",
+      "img": "assets/images/ktm2.webp",
     },
     {
       "name": "Yamaha R15 V4",

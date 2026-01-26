@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 
 import '../widget/customdrawer.dart';
+import 'bikedetailpage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -139,9 +140,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 5,
-        leadingWidth: 50,
+        leadingWidth: 45,
         leading: Padding(
-          padding: EdgeInsets.only(left: w * 0.020),
+          padding: EdgeInsets.only(left: w * 0.018),
           child: Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.menu, color: Colors.black),
@@ -158,7 +159,7 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.location_on, size: 18, color: Colors.purple),
+              Icon(Icons.location_on, size: 18, color: Colors.red),
               const SizedBox(width: 6),
               Text(
                 locationController.text.isEmpty
@@ -177,10 +178,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-
-
-
-        /// 🔔 NOTIFICATION + 👤 PROFILE
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none, color: Colors.black),
@@ -204,10 +201,10 @@ class _HomePageState extends State<HomePage> {
                   enabled: false,
                   value: 0,
                   child: SizedBox(
-                    height: h * 0.075,
-                    width: w * 0.27,
+                    height: h * 0.070,
+                    width: w * 0.46,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           "Hi Satyam",
@@ -217,19 +214,19 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black54,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 3),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.location_on,
+                            Icon(Icons.location_on,
                                 size: 16, color: Colors.redAccent),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4),
                             Text(
                               locationController.text.isEmpty
                                   ? "Select city"
                                   : locationController.text,
                               style: TextStyle(
-                                fontSize: w * 0.032,
+                                fontSize: w * 0.028,
                                 color: Colors.black54,
                               ),
                             ),
@@ -329,7 +326,14 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   var bike = bikes[index];
                   return GestureDetector(
-                    onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BikeDetailPage(bike: bike),
+                          ),
+                        );
+                      },
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
