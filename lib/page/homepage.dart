@@ -8,9 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
-
 import '../widget/customdrawer.dart';
 import 'bikedetailpage.dart';
+import 'brandbikespage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,37 +26,201 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController locationController = TextEditingController();
   final FocusNode locationFocus = FocusNode();
 
-
   List bikes = [
     {
       "name": "Royal Enfield Classic 350",
       "price": "₹1.90 Lakh",
-      "img": "assets/images/bullet.jpg",
+      "brand": "Royal Enfield",
       "cc": "349 cc",
       "km": "35 kmpl",
+      "runKm": "12,500 km",
+      "fuel": "Petrol",
+      "regYear": "2021",
+      "owner": "1st Owner",
+      "rto": "UP32",
+      "location": "Ayodhya, UP",
+      "mileage": "35 kmpl",
+      "images": [
+        "assets/images/bullet.jpg",
+        "assets/images/bulletbg.jpg",
+        "assets/images/bulletfront.webp",
+        "assets/images/bulletright.jpg",
+        "assets/images/bulletbg.jpg",
+      ],
     },
     {
       "name": "Yamaha R15 V4",
       "price": "₹1.82 Lakh",
-      "img": "assets/images/Rs15.jpg",
+      "brand": "Yamaha",
       "cc": "155 cc",
       "km": "45 kmpl",
+      "runKm": "5,500 km",
+      "fuel": "Petrol",
+      "regYear": "2022",
+      "owner": "1st Owner",
+      "rto": "UP62",
+      "location": "Jaunpur, UP",
+      "mileage": "45 kmpl",
+      "images": [
+        "assets/images/Rs15.jpg",
+        "assets/images/bulletright.jpg",
+        "assets/images/bulletfront.webp",
+        "assets/images/bulletbg.jpg",
+        "assets/images/Rs15.jpg",
+      ],
     },
     {
       "name": "KTM Duke 200",
       "price": "₹1.96 Lakh",
-      "img": "assets/images/ktm2.webp",
+      "brand": "KTM",
       "cc": "199 cc",
       "km": "33 kmpl",
+      "runKm": "8,300 km",
+      "fuel": "Petrol",
+      "regYear": "2021",
+      "owner": "1st Owner",
+      "rto": "UP32",
+      "location": "Ayodhya, UP",
+      "mileage": "33 kmpl",
+      "images": [
+        "assets/images/ktm2.webp",
+        "assets/images/bulletfront.webp",
+        "assets/images/bulletright.jpg",
+        "assets/images/bulletbg.jpg",
+        "assets/images/ktm2.webp",
+      ],
     },
     {
-      "name": "Bajaj Pulsar 220F",
+      "name": "Bajaj Pulsar 220C",
       "price": "₹1.34 Lakh",
-      "img": "assets/images/pulsar1.png",
+      "brand": "Bajaj",
       "cc": "220 cc",
       "km": "40 kmpl",
+      "runKm": "10,000 km",
+      "fuel": "Petrol",
+      "regYear": "2020",
+      "owner": "1st Owner",
+      "rto": "UP32",
+      "location": "Lucknow, UP",
+      "mileage": "40 kmpl",
+      "images": [
+        "assets/images/pulsar1.png",
+        "assets/images/bulletfront.webp",
+        "assets/images/bulletright.jpg",
+        "assets/images/bulletbg.jpg",
+        "assets/images/pulsar1.png",
+      ],
     },
   ];
+
+  List bikeList = [
+    {
+      "name": "Hero Splendor Plus",
+      "price": "₹74,000",
+      "brand": "Hero",
+      "cc": "97 cc",
+      "km": "65 kmpl",
+      "runKm": "18,000 km",
+      "fuel": "Petrol",
+      "regYear": "2019",
+      "owner": "2nd Owner",
+      "rto": "UP32",
+      "location": "Ayodhya, UP",
+      "mileage": "65 kmpl",
+      "images": [
+        "assets/images/hero1.webp",
+        "assets/images/hero1.webp",
+        "assets/images/hero1.webp",
+        "assets/images/hero1.webp",
+        "assets/images/hero1.webp",
+      ],
+    },
+    {
+      "name": "TVS Raider",
+      "price": "₹80,750",
+      "brand": "TVS",
+      "cc": "125 cc",
+      "km": "56 kmpl",
+      "runKm": "6,500 km",
+      "fuel": "Petrol",
+      "regYear": "2022",
+      "owner": "1st Owner",
+      "rto": "UP62",
+      "location": "Varanasi, UP",
+      "mileage": "56 kmpl",
+      "images": [
+        "assets/images/tvs.jpg",
+        "assets/images/tvs.jpg",
+        "assets/images/tvs.jpg",
+        "assets/images/tvs.jpg",
+        "assets/images/tvs.jpg",
+      ],
+    },
+    {
+      "name": "Bajaj Pulsar 125",
+      "price": "₹85,000",
+      "brand": "Bajaj",
+      "cc": "125 cc",
+      "km": "50 kmpl",
+      "runKm": "9,200 km",
+      "fuel": "Petrol",
+      "regYear": "2021",
+      "owner": "1st Owner",
+      "rto": "UP32",
+      "location": "Ayodhya, UP",
+      "mileage": "50 kmpl",
+      "images": [
+        "assets/images/pulsar1.png",
+        "assets/images/pulsar1.png",
+        "assets/images/pulsar1.png",
+        "assets/images/pulsar1.png",
+        "assets/images/pulsar1.png",
+      ],
+    },
+    {
+      "name": "Honda Shine",
+      "price": "₹79,000",
+      "brand": "Honda",
+      "cc": "125 cc",
+      "km": "55 kmpl",
+      "runKm": "11,000 km",
+      "fuel": "Petrol",
+      "regYear": "2020",
+      "owner": "2nd Owner",
+      "rto": "UP32",
+      "location": "Prayagraj, UP",
+      "mileage": "55 kmpl",
+      "images": [
+        "assets/images/honda.jpg",
+        "assets/images/honda.jpg",
+        "assets/images/honda.jpg",
+        "assets/images/honda.jpg",
+        "assets/images/honda.jpg",
+      ],
+    },
+    {
+      "name": "Yamaha FZ",
+      "price": "₹1.20 Lakh",
+      "brand": "Yamaha",
+      "cc": "149 cc",
+      "km": "48 kmpl",
+      "runKm": "7,800 km",
+      "fuel": "Petrol",
+      "regYear": "2021",
+      "owner": "1st Owner",
+      "rto": "UP62",
+      "location": "Jaunpur, UP",
+      "mileage": "48 kmpl",
+      "images": [
+        "assets/images/R15.webp",
+        "assets/images/R15.webp",
+        "assets/images/R15.webp",
+        "assets/images/R15.webp",
+        "assets/images/R15.webp",
+      ],
+    },
+  ];
+
 
   List<String> bannerImages = [
     "assets/images/banner4.jpg",
@@ -64,32 +228,8 @@ class _HomePageState extends State<HomePage> {
     "assets/images/bannerhero.jpg",
   ];
 
-  List bikeList = [
-    {
-      "name": "Hero Splendor Plus",
-      "price": "₹74,000",
-      "img": "assets/images/hero1.webp",
-    },
-    {"name": "TVS Raider", "price": "₹80,750", "img": "assets/images/tvs.jpg"},
-    {
-      "name": "Bajaj Pulsar 125",
-      "price": "₹85,000",
-      "img": "assets/images/pulsar1.png",
-    },
-    {
-      "name": "Honda Shine",
-      "price": "₹79,000",
-      "img": "assets/images/honda.jpg",
-    },
-    {
-      "name": "Yamaha FZ",
-      "price": "₹1.20 Lakh",
-      "img": "assets/images/R15.webp",
-    },
-  ];
-
   List brands = [
-    {"name": "Bajaj", "img": "assets/images/Bajajlogo.webp"},
+    {"name": "Bajaj", "img": "assets/images/Bajajlogo.webp", "brand": "Yamaha", },
     {"name": "Hero", "img": "assets/images/herologo.png"},
     {"name": "Kawasaki", "img": "assets/images/kawa2logo.webp"},
     {"name": "Honda", "img": "assets/images/hondalogo3.jpg"},
@@ -330,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => BikeDetailPage(bike: bike),
+                            builder: (_) => BikeDetailPage(bike: bikes[index]),
                           ),
                         );
                       },
@@ -349,7 +489,7 @@ class _HomePageState extends State<HomePage> {
                             child: Padding(
                               padding: EdgeInsets.all(8),
                               child: Image.asset(
-                                bike["img"],
+                                bike["images"][0],
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -408,60 +548,70 @@ class _HomePageState extends State<HomePage> {
                   itemCount: bikeList.length,
                   itemBuilder: (context, index) {
                     var bike = bikeList[index];
-                    return Container(
-                      height: h*0.190,
-                      width: w*0.67,
-                      margin: EdgeInsets.only(right: w*0.025),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 4),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: h*0.170,
-                            width: w*0.66,
-                            padding: EdgeInsets.all(8),
-                            child: Image.asset(
-                              bike["img"],
-                              fit: BoxFit.contain,
-                            ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BikeDetailPage(bike: bike),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              bike["name"],
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: w*0.026,
-                              vertical: h*0.005,
-                            ),
-                            child: Text(
-                              bike["price"],
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
+                        );
+                      },
+                      child: Container(
+                        height: h*0.190,
+                        width: w*0.67,
+                        margin: EdgeInsets.only(right: w*0.025),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black12, blurRadius: 4),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: h*0.170,
+                              width: w*0.66,
+                              padding: EdgeInsets.all(8),
+                              child: Image.asset(
+                                bike["images"][0],
+                                fit: BoxFit.contain,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: w*0.026),
-                            child: Text(
-                              "View Bikes Details",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: w*0.034,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                bike["name"],
+                                style: TextStyle(fontWeight: FontWeight.w600),
                               ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: w*0.026,
+                                vertical: h*0.005,
+                              ),
+                              child: Text(
+                                bike["price"],
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: w*0.026),
+                              child: Text(
+                                "View Bikes Details",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: w*0.034,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -485,14 +635,33 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemBuilder: (context, index) {
                   var brand = brands[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(25),
-                      child: Image.asset(brand["img"], fit: BoxFit.cover),
+                  return GestureDetector(
+                    onTap: () {
+                      List allBikes = [...bikes, ...bikeList];
+
+                      List filteredBikes = allBikes.where((bike) {
+                        return bike["brand"] == brand["name"];
+                      }).toList();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BrandBikesPage(
+                            brandName: brand["name"],
+                            bikes: filteredBikes,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(25),
+                        child: Image.asset(brand["img"], fit: BoxFit.cover),
+                      ),
                     ),
                   );
                 },
