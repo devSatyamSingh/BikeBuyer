@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../homepages/bikedetailpage.dart';
+
 class ScooterListPage extends StatefulWidget {
   const ScooterListPage({super.key});
 
@@ -41,12 +43,41 @@ class _ScooterListPageState extends State<ScooterListPage> {
     },
   ];
 
+  void openBikeDetails(BuildContext context, Map<String, String> bike) {
+    final fullBike = {
+      "name": bike["name"],
+      "price": bike["price"],
+      "cc": "150 cc",
+      "km": "45 kmpl",
+      "fuel": "Petrol",
+      "runKm": "8,000 km",
+      "regYear": "2021",
+      "owner": "1st Owner",
+      "rto": "UP32",
+      "location": "Ayodhya, UP",
+      "images": [
+        bike["img"],
+        bike["img"],
+        bike["img"],
+        bike["img"],
+        bike["img"],
+      ],
+    };
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BikeDetailPage(bike: fullBike),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Scooter "),
+        title: Text("Scooter ", style: TextStyle(fontWeight: FontWeight.w500),),
         backgroundColor: Colors.white,
         elevation: 1,
       ),
@@ -66,7 +97,7 @@ class _ScooterListPageState extends State<ScooterListPage> {
                   bike["img"]!,
                   height: 275,
                   width: 375,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(19),
@@ -87,14 +118,19 @@ class _ScooterListPageState extends State<ScooterListPage> {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 14),
-                      Container(
-                        height: 50,
-                        width: 360,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.purple
+                      GestureDetector(
+                        onTap: () {
+                          openBikeDetails(context, bike);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 360,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.purple
+                          ),
+                          child: Center(child: Text("View Bike Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),)),
                         ),
-                        child: Center(child: Text("View Bike Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),)),
                       )
                     ],
                   ),

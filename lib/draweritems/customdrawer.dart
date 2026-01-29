@@ -1,18 +1,24 @@
-import 'package:bikebuyer/draweritems/OfferPage.dart';
+
 import 'package:bikebuyer/draweritems/ServicesCenterPage.dart';
 import 'package:bikebuyer/draweritems/dealernearme.dart';
 import 'package:bikebuyer/draweritems/finddealerpage.dart';
-import 'package:bikebuyer/page/hometabs.dart';
+import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/draweritems/Electricbikelist.dart';
 import 'package:bikebuyer/draweritems/bikelist.dart';
 import 'package:bikebuyer/draweritems/scooterlist.dart';
 import 'package:bikebuyer/draweritems/superbikelist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
 
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -55,7 +61,6 @@ class CustomDrawer extends StatelessWidget {
           drawerTile(context, "Scooters", ScooterListPage()),
           drawerTile(context, "Electric Bikes", ElectricBikeLIst()),
           drawerTile(context, "Super Bikes", SuperBikeList()),
-          drawerTile( context, "Offers", OfferPage()),
           drawerTile(context, "Find Dealers", Finddealerpage()),
           drawerTile(context, "Dealer Near Me", DealerNearPage()),
           drawerTile(context, "Find Services Center", ServicesCenterPage()),
@@ -84,12 +89,36 @@ class CustomDrawer extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
-                FaIcon(FontAwesomeIcons.instagram, color: Colors.pink),
-                FaIcon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
-                FaIcon(FontAwesomeIcons.youtube, color: Colors.red),
+                InkWell(
+                  onTap: () {
+                    openLink("https://facebook.com");
+                  },
+                  child: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    openLink("https://www.instagram.com/");
+                  },
+                  child: FaIcon(FontAwesomeIcons.instagram, color: Colors.pink),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    openLink("https://twitter.com/");
+                  },
+                  child: FaIcon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    openLink("https://www.youtube.com/");
+                  },
+                  child: FaIcon(FontAwesomeIcons.youtube, color: Colors.red),
+                ),
               ],
             ),
+
           ),
           SizedBox(height: screenHeight*0.020),
         ],
@@ -97,14 +126,27 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
+  Future<void> openLink(String url) async {
+    final uri = Uri.parse(url);
+
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        debugPrint("Cannot launch $url");
+      }
+    } catch (e) {
+      debugPrint("Error launching url: $e");
+    }
+  }
 
   Widget drawerTile(BuildContext context, String title, Widget page) {
     return ListTile(
-      visualDensity: const VisualDensity(vertical: -2),
-      title: Text(title, style: const TextStyle(fontSize: 16)),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 15),
+      visualDensity: VisualDensity(vertical: -1),
+      title: Text(title, style: TextStyle(fontSize: 16)),
+      trailing: Icon(Icons.arrow_forward_ios, size: 15),
       onTap: () {
-        Navigator.pop(context); // close drawer
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => page),

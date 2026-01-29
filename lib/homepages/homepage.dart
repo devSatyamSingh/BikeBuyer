@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
-import '../widget/customdrawer.dart';
+import '../draweritems/customdrawer.dart';
 import 'bikedetailpage.dart';
 import 'brandbikespage.dart';
 

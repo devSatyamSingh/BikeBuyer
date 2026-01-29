@@ -1,4 +1,4 @@
-import 'package:bikebuyer/page/hometabs.dart';
+import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:flutter/material.dart';
 
 class WishlistPage extends StatefulWidget {

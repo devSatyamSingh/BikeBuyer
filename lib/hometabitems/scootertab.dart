@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../page/bikedetailpage.dart';
+import '../homepages/bikedetailpage.dart';
 
 class ScooterTab extends StatefulWidget {
   const ScooterTab({super.key});

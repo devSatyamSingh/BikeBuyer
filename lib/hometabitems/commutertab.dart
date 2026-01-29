@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../page/bikedetailpage.dart';
+import '../homepages/bikedetailpage.dart';
 
 class CommuterBikeTab extends StatefulWidget {
   const CommuterBikeTab({super.key});

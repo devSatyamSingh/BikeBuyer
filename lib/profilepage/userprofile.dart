@@ -3,7 +3,7 @@ import 'package:bikebuyer/profilepage/aboutuspage.dart';
 import 'package:bikebuyer/profilepage/editprofile.dart';
 import 'package:bikebuyer/profilepage/privacy_policy.dart';
 import 'package:bikebuyer/profilepage/terms_condi.dart';
-import 'package:bikebuyer/widget/dialogbox.dart';
+import 'package:bikebuyer/profilepage/dialogbox.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 

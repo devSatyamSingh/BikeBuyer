@@ -1,5 +1,5 @@
 
-import 'package:bikebuyer/page/hometabs.dart';
+import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:bikebuyer/page/signuppage.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeTabs()),
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()),
       );
     });
   }

@@ -13,7 +13,7 @@ class _DealerNearPageState extends State<DealerNearPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Near Me Dealer"),
+        title: Text("Near Me Dealer", style: TextStyle(fontWeight: FontWeight.w500),),
         backgroundColor: Colors.white,
         elevation: 1,
       ),

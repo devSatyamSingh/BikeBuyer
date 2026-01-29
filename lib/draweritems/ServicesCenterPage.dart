@@ -13,7 +13,7 @@ class _ServicesCenterPageState extends State<ServicesCenterPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Service Center "),
+        title: Text("Service Center", style: TextStyle(fontWeight: FontWeight.w500),),
         backgroundColor: Colors.white,
         elevation: 1,
       ),

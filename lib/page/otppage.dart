@@ -1,5 +1,5 @@
-import 'package:bikebuyer/page/homepage.dart';
-import 'package:bikebuyer/page/hometabs.dart';
+import 'package:bikebuyer/homepages/homepage.dart';
+import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';

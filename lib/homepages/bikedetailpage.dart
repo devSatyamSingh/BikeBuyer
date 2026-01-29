@@ -1,6 +1,8 @@
+import 'package:bikebuyer/homepages/contact_dealer.dart';
+import 'package:bikebuyer/homepages/send_inquiry.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import '../widget/similarbikelist.dart';
+import 'similarbikelist.dart';
 import 'fullscreenimg.dart';
 
 class BikeDetailPage extends StatefulWidget {
@@ -94,8 +96,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                     },
                     child: AnimatedSwitcher(
                       duration: Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) =>
-                          ScaleTransition(scale: animation, child: child),
+                      transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
                       child: CircleAvatar(
                         key: ValueKey(isWishlisted),
                         radius: 18,
@@ -138,7 +139,6 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       ),
                     ),
                   ),
-
                 Positioned(
                   bottom: 15,
                   left: 2,
@@ -186,7 +186,6 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       Text("Verified Dealer", style: TextStyle(color: Colors.blue)),
                     ],
                   ),
-
                   SizedBox(height: 6),
                   Text(
                     widget.bike["price"],
@@ -204,7 +203,32 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       Text(widget.bike["runKm"], style: TextStyle(color: Colors.black54)),
                     ],
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          child: Icon(Icons.store),
+                        ),
+                        SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Shiv Motors | Ayodhya",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text("120+ Bikes"),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -228,31 +252,6 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                    infoRow("Engine", widget.bike["cc"]),
                    infoRow("Fuel Type", widget.bike["fuel"]),
                   SizedBox(height: 26),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          child: Icon(Icons.store),
-                        ),
-                        SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Shiv Motors",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text("4.5 ★  |  120+ Bikes"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                   SizedBox(height: 8,),
                   SimilarBikesSection(w: w, h: h),
                   SizedBox(height: 20),
                   Column(
@@ -265,7 +264,6 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       Text("• Avoid advance payment"),
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -277,16 +275,21 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
         child: Row(
           children: [
             Expanded(
-              child:Container(
-                width: 200,
-                height: h * 0.06,
-                decoration: BoxDecoration( color: Colors.white54,
-                  borderRadius: BorderRadius.circular(20), ),
-                child: Center(
-                  child: Text( "Get Inquiry",
-                    style: TextStyle( color: Colors.black,
-                      fontSize: w * 0.040,
-                      fontWeight: FontWeight.w600,
+              child:GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SendInquiryPage()));
+                },
+                child: Container(
+                  width: 200,
+                  height: h * 0.06,
+                  decoration: BoxDecoration( color: Colors.white54,
+                    borderRadius: BorderRadius.circular(20), ),
+                  child: Center(
+                    child: Text( "Send Inquiry",
+                      style: TextStyle( color: Colors.black,
+                        fontSize: w * 0.040,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -294,19 +297,37 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
             ),
             SizedBox(width: 12),
             Expanded(
-              child: Container(
-              width: 200,
-               height: h * 0.06,
-                decoration: BoxDecoration( color: Colors.purple,
-                 borderRadius: BorderRadius.circular(20), ),
-                 child: Center(
-                 child: Text( "Contact Dealer",
-                  style: TextStyle( color: Colors.white,
-                 fontSize: w * 0.040,
-                  fontWeight: FontWeight.w600,
-                  ),
-                 ),
-                 ),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ContactDealerPage(
+                        seller: {
+                          "name": "Shiv Motors",
+                          "phone": "9876543210",
+                          "whatsapp": "9876543210",
+                          "location": "Ayodhya, UP",
+                        },
+                      ),
+                    ),
+                  );
+                },
+
+                child: Container(
+                width: 200,
+                 height: h * 0.06,
+                  decoration: BoxDecoration( color: Colors.purple,
+                   borderRadius: BorderRadius.circular(20), ),
+                   child: Center(
+                   child: Text( "Contact Dealer",
+                    style: TextStyle( color: Colors.white,
+                   fontSize: w * 0.040,
+                    fontWeight: FontWeight.w600,
+                    ),
+                   ),
+                   ),
+                ),
               ),
             )
           ],

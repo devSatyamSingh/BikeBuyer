@@ -1,6 +1,6 @@
 import 'package:bikebuyer/page/bikesell.dart';
-import 'package:bikebuyer/page/homepage.dart';
-import 'package:bikebuyer/page/userprofile.dart';
+import 'package:bikebuyer/homepages/homepage.dart';
+import 'package:bikebuyer/profilepage/userprofile.dart';
 import 'package:bikebuyer/page/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
