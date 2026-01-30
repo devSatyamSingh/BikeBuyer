@@ -92,14 +92,14 @@ class BikeListPage extends StatelessWidget {
                 Image.asset(
                   bike["img"]!,
                   height: 280,
-                  width: 380,
+                  width: 366,
                   fit: BoxFit.contain,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(19),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children:[
                       Text(
                         bike["name"]!,
                         style:TextStyle(

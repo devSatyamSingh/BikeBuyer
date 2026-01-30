@@ -1,6 +1,5 @@
 
 import 'package:bikebuyer/draweritems/ServicesCenterPage.dart';
-import 'package:bikebuyer/draweritems/dealernearme.dart';
 import 'package:bikebuyer/draweritems/finddealerpage.dart';
 import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/draweritems/Electricbikelist.dart';
@@ -62,7 +61,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
           drawerTile(context, "Electric Bikes", ElectricBikeLIst()),
           drawerTile(context, "Super Bikes", SuperBikeList()),
           drawerTile(context, "Find Dealers", Finddealerpage()),
-          drawerTile(context, "Dealer Near Me", DealerNearPage()),
           drawerTile(context, "Find Services Center", ServicesCenterPage()),
           SizedBox(height: screenHeight*0.015,),
           Padding(

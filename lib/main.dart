@@ -1,8 +1,15 @@
 import 'package:bikebuyer/page/splashpage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'homepages/location_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => LocationProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
