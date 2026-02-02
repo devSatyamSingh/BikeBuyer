@@ -35,11 +35,13 @@ class _FinddealerpageState extends State<Finddealerpage> {
       appBar: AppBar(
         title: const Text(
           "Find Dealer",
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
         ),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -61,7 +63,7 @@ class _FinddealerpageState extends State<Finddealerpage> {
             SizedBox(height: 18),
             Text(
               "Select Brand",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 14),
             Expanded(
@@ -104,8 +106,9 @@ class _FinddealerpageState extends State<Finddealerpage> {
                           const SizedBox(height: 6),
                           Text(
                             brand["name"]!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

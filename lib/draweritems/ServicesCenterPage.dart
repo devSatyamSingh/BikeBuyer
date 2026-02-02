@@ -35,11 +35,13 @@ class _ServicesCenterPageState extends State<ServicesCenterPage> {
       appBar: AppBar(
         title: Text(
           "Service Center ",
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
         ),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -61,13 +63,13 @@ class _ServicesCenterPageState extends State<ServicesCenterPage> {
             SizedBox(height: 18),
             Text(
               "Select Brand",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 14),
             Expanded(
               child: GridView.builder(
                 itemCount: brands.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
@@ -102,11 +104,12 @@ class _ServicesCenterPageState extends State<ServicesCenterPage> {
                             brand["img"]!,
                             height: w * 0.12,
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             brand["name"]!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

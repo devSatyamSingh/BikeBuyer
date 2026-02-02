@@ -305,6 +305,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         toolbarHeight: 60,
         backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         elevation: 0,
         titleSpacing: 5,
         leadingWidth: 45,
@@ -335,8 +336,9 @@ class _HomePageState extends State<HomePage> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -375,7 +377,8 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           "Hi Satyam",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Poppins',
                             fontSize: w * 0.040,
                             color: Colors.black54,
                           ),
@@ -394,6 +397,7 @@ class _HomePageState extends State<HomePage> {
                               builder: (context, loc, _) => Text(
                                 loc.city,
                                 style: TextStyle(
+                                  fontFamily: 'Poppins',
                                   fontSize: w * 0.028,
                                   color: Colors.black54,
                                 ),
@@ -463,6 +467,7 @@ class _HomePageState extends State<HomePage> {
                               "No bikes found",
                               style: TextStyle(
                                 fontSize: 18,
+                                fontFamily: 'Poppins',
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -542,8 +547,9 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "Popular Bikes",
                   style: TextStyle(
-                    fontSize: w * 0.043,
-                    fontWeight: FontWeight.bold,
+                    fontSize: w * 0.045,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: h * 0.0135),
@@ -594,7 +600,7 @@ class _HomePageState extends State<HomePage> {
                                 bike["name"],
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins', fontSize: 13),
                               ),
                             ),
                             Padding(
@@ -603,7 +609,8 @@ class _HomePageState extends State<HomePage> {
                                 bike["price"],
                                 style: TextStyle(
                                   color: Colors.green,
-                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
@@ -636,8 +643,9 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "The Most Sell Bikes Brands",
                   style: TextStyle(
-                    fontSize: w * 0.047,
-                    fontWeight: FontWeight.bold,
+                    fontSize: w * 0.044,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: h * 0.0125),
@@ -684,7 +692,7 @@ class _HomePageState extends State<HomePage> {
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: Text(
                                   bike["name"],
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins',),
                                 ),
                               ),
                               Padding(
@@ -696,7 +704,8 @@ class _HomePageState extends State<HomePage> {
                                   bike["price"],
                                   style: TextStyle(
                                     color: Colors.green,
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -708,7 +717,8 @@ class _HomePageState extends State<HomePage> {
                                   "View Bikes Details",
                                   style: TextStyle(
                                     color: Colors.blue,
-                                    fontSize: w * 0.034,
+                                    fontFamily: 'Poppins',
+                                    fontSize: w * 0.032,
                                   ),
                                 ),
                               ),
@@ -724,7 +734,8 @@ class _HomePageState extends State<HomePage> {
                   "Popular Brands",
                   style: TextStyle(
                     fontSize: w * 0.043,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: h * 0.0130),
@@ -775,8 +786,9 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "The Most Searched Bikes",
                   style: TextStyle(
-                    fontSize: w * 0.043,
-                    fontWeight: FontWeight.bold,
+                    fontSize: w * 0.042,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: h * 0.009),
@@ -792,8 +804,9 @@ class _HomePageState extends State<HomePage> {
                           dividerColor: Colors.white,
                           labelColor: Colors.black,
                           labelStyle: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
                           ),
                           unselectedLabelColor: Colors.grey,
                           indicatorColor: Colors.purple,
@@ -889,20 +902,21 @@ Widget buildBikeCard(Map bike) {
             bike["name"],
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             bike["price"],
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.green,
-              fontWeight: FontWeight.bold,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
       ],
     ),
   );

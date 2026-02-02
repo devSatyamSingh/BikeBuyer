@@ -29,27 +29,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final h = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Edit Profile"),
+        title: Text("Edit Profile", style: TextStyle(fontFamily: 'Poppins',),),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 2,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: Padding(
         padding: EdgeInsets.all(w * 0.06),
         child: Column(
           children: [
-            CircleAvatar(
-              radius: 44,
-              backgroundColor: Colors.purple.shade100.withAlpha(100),
-              child: Text(
-                nameController.text.isNotEmpty
-                    ? nameController.text[0].toUpperCase()
-                    : "U",
-                style: TextStyle(
-                  fontSize: w*0.10,
-                  color: Colors.purple,
+            Container(
+              padding: EdgeInsets.all(w * 0.0062),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.purple.shade100,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.2),
+                    blurRadius: 3,
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: w * 0.10,
+                backgroundColor: Colors.grey.shade200,
+                child: Text(
+                  nameController.text.isNotEmpty
+                      ? nameController.text[0].toUpperCase()
+                      : "U",
+                  style: TextStyle(
+                    fontSize: w * 0.11,
+                    fontFamily: 'Poppins',
+                    color: Colors.purple,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -58,6 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: nameController,
               decoration: InputDecoration(
                 labelText: "Name",
+                labelStyle: TextStyle(fontFamily: 'Poppins',),
                 filled: true,
               ),
             ),
@@ -67,6 +85,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: "Mobile Number",
+                labelStyle: TextStyle(fontFamily: 'Poppins',),
                 filled: true,
               ),
             ),
@@ -80,7 +99,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Cancel"),
+                    child: Text("Cancel", style: TextStyle(fontFamily: 'Poppins',),),
                   ),
                 ),
                 SizedBox(width: w*0.033),
@@ -97,7 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,
                     ),
-                    child: const Text("Save Changes", style: TextStyle(color: Colors.white),),
+                    child: Text("Save Changes", style: TextStyle(color: Colors.white, fontFamily: 'Poppins',),),
                   ),
                 ),
               ],

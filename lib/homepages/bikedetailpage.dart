@@ -175,24 +175,26 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                   Text(
                     widget.bike["name"],
                     style: TextStyle(
-                      fontSize: w * 0.048,
-                      fontWeight: FontWeight.bold,
+                      fontSize: w * 0.046,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   Row(
                     children: [
                       Icon(Icons.verified, color: Colors.blue, size: 17),
                       SizedBox(width: 4),
-                      Text("Verified Dealer", style: TextStyle(color: Colors.blue)),
+                      Text("Verified Dealer", style: TextStyle(color: Colors.blue, fontFamily: 'Poppins',)),
                     ],
                   ),
                   SizedBox(height: 6),
                   Text(
                     widget.bike["price"],
                     style: TextStyle(
-                      fontSize: w * 0.045,
+                      fontSize: w * 0.043,
+                      fontFamily: 'Poppins',
                       color: Colors.green,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 6,),
@@ -200,7 +202,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                     children: [
                       Icon(Icons.speed, size: 16, color: Colors.grey),
                       SizedBox(width: 4),
-                      Text(widget.bike["runKm"], style: TextStyle(color: Colors.black54)),
+                      Text(widget.bike["runKm"], style: TextStyle(color: Colors.black54, fontFamily: 'Poppins',)),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -221,8 +223,8 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Shiv Motors | Ayodhya",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text("120+ Bikes"),
+                                style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
+                            Text("120+ Bikes", style: TextStyle(fontWeight: FontWeight.w400, fontFamily: 'Poppins',),),
                           ],
                         ),
                       ],
@@ -238,7 +240,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                     ],
                   ),
                   SizedBox(height: 24),
-                  Text("Basic Information", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text("Basic Information", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
                   SizedBox(height: 12),
                    infoRow("Registration Year", widget.bike["regYear"]),
                    infoRow("KM Driven", widget.bike["runKm"]),
@@ -246,7 +248,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                    infoRow("RTO", widget.bike["rto"]),
                    infoRow("Location", widget.bike["location"]),
                   SizedBox(height: 22),
-                  Text("Specifications", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text("Specifications", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
                   SizedBox(height: 12),
                    infoRow("Mileage", widget.bike["km"]),
                    infoRow("Engine", widget.bike["cc"]),
@@ -257,11 +259,11 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Safety Tips", style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text("Safety Tips", style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
                       SizedBox(height: 6),
-                      Text("• Meet seller in public place"),
-                      Text("• Check RC & chassis number"),
-                      Text("• Avoid advance payment"),
+                      Text("• Meet seller in public place", style: TextStyle(fontFamily: 'Poppins',),),
+                      Text("• Check RC & chassis number", style: TextStyle(fontFamily: 'Poppins',),),
+                      Text("• Avoid advance payment", style: TextStyle(fontFamily: 'Poppins',),),
                     ],
                   ),
                 ],
@@ -287,8 +289,9 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                   child: Center(
                     child: Text( "Send Inquiry",
                       style: TextStyle( color: Colors.black,
-                        fontSize: w * 0.040,
-                        fontWeight: FontWeight.w600,
+                        fontSize: w * 0.038,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -305,15 +308,14 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       builder: (_) => ContactDealerPage(
                         seller: {
                           "name": "Shiv Motors",
-                          "phone": "9876543210",
-                          "whatsapp": "9876543210",
+                          "phone": "7860701843",
+                          "whatsapp": "7860701843",
                           "location": "Ayodhya, UP",
                         },
                       ),
                     ),
                   );
                 },
-
                 child: Container(
                 width: 200,
                  height: h * 0.06,
@@ -322,8 +324,9 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                    child: Center(
                    child: Text( "Contact Dealer",
                     style: TextStyle( color: Colors.white,
-                   fontSize: w * 0.040,
-                    fontWeight: FontWeight.w600,
+                      fontSize: w * 0.038,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
                     ),
                    ),
                    ),
@@ -358,20 +361,19 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
       children: [
         Icon(icon, color: Colors.purple),
         SizedBox(height: 4),
-        Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
-        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey)),
+        Text(value, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
+        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey, fontFamily: 'Poppins',)),
       ],
     );
   }
-
   Widget infoRow(String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(color: Colors.grey)),
-          Text(value, style: TextStyle(fontWeight: FontWeight.w500)),
+          Text(title, style: TextStyle(color: Colors.grey, fontFamily: 'Poppins',)),
+          Text(value, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',)),
         ],
       ),
     );

@@ -122,21 +122,21 @@ class _LatestBikeScooterTabState extends State<LatestBikeScooterTab> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       bike["name"]!,
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, fontFamily: 'Poppins',),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
                     child: Text(
                       bike["price"]!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       "View Bikes Details",
-                      style: TextStyle(color: Colors.red, fontSize: 14),
+                      style: TextStyle(color: Colors.red, fontSize: 13, fontFamily: 'Poppins',),
                     ),
                   ),
                 ],

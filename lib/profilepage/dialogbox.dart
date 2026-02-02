@@ -28,8 +28,9 @@ Future<void> showLogoutDialog(BuildContext context) {
               Text(
                 "Logout",
                 style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 8),
@@ -38,6 +39,7 @@ Future<void> showLogoutDialog(BuildContext context) {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
+                  fontFamily: 'Poppins',
                   color: Colors.black54,
                 ),
               ),
@@ -54,7 +56,7 @@ Future<void> showLogoutDialog(BuildContext context) {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text("Cancel", style: TextStyle(color: Colors.black, fontSize: 16)),
+                      child: Text("Cancel", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Poppins',)),
                     ),
                   ),
                   SizedBox(width: 12),
@@ -75,7 +77,7 @@ Future<void> showLogoutDialog(BuildContext context) {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text("Logout", style: TextStyle(color: Colors.black, fontSize: 16),),
+                      child: Text("Logout", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Poppins',),),
                     ),
                   ),
                 ],

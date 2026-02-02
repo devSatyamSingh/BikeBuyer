@@ -21,10 +21,12 @@ class _SendInquiryPageState extends State<SendInquiryPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Send Inquiry", style : TextStyle(fontWeight: FontWeight.w500),),
+        title: Text("Send Inquiry", style : TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -121,7 +123,8 @@ class _SendInquiryPageState extends State<SendInquiryPage> {
                   child: Text(
                     "Submit Inquiry",
                     style: TextStyle(
-                      fontSize: w * 0.042,
+                      fontSize: w * 0.041,
+                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

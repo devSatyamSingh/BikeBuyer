@@ -70,8 +70,9 @@ class BrandBikesPage extends StatelessWidget {
                       Text(
                         bike["name"],
                         style: TextStyle(
+                          fontFamily: 'Poppins',
                           fontSize: 19,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       SizedBox(height: 6),
@@ -79,6 +80,7 @@ class BrandBikesPage extends StatelessWidget {
                         bike["price"],
                         style: TextStyle(
                           fontSize: 18,
+                          fontFamily: 'Poppins',
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                         ),
@@ -107,6 +109,7 @@ class BrandBikesPage extends StatelessWidget {
                             "View Bike Details",
                             style: TextStyle(
                               fontSize: 17,
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),

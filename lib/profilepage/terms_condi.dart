@@ -16,8 +16,11 @@ class _TermsConditionPageState extends State<TermsConditionPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
-        elevation: 2,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        titleSpacing: 3,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -27,7 +30,7 @@ class _TermsConditionPageState extends State<TermsConditionPage> {
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           "Terms & Conditions",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins',),
         ),
       ),
       body: SingleChildScrollView(
@@ -44,8 +47,9 @@ class _TermsConditionPageState extends State<TermsConditionPage> {
               Text(
                 "Terms and Conditions",
                 style: TextStyle(
-                  fontSize: w * 0.045,
-                  fontWeight: FontWeight.bold,
+                  fontSize: w * 0.044,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 12),
@@ -124,8 +128,9 @@ class _TermsConditionPageState extends State<TermsConditionPage> {
       child: Text(
         title,
         style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
         ),
       ),
     );
@@ -135,8 +140,9 @@ class _TermsConditionPageState extends State<TermsConditionPage> {
     return Text(
       text,
       style: TextStyle(
-        fontSize: 15,
+        fontSize: 14,
         height: 1.6,
+        fontFamily: 'Poppins',
         color: Colors.black87,
       ),
     );

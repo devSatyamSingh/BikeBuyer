@@ -43,7 +43,7 @@ void showLocationBottomSheet(BuildContext context) {
               SizedBox(height: 16),
               Text(
                 "Select your city",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 12),
               GooglePlaceAutoCompleteTextField(
@@ -72,7 +72,7 @@ void showLocationBottomSheet(BuildContext context) {
               SizedBox(height: 16),
               ListTile(
                 leading: Icon(Icons.my_location, color: Colors.purple),
-                title: Text("Use current location"),
+                title: Text("Use current location", style: TextStyle(fontFamily: 'Poppins',),),
                 onTap: () async {
                   await detectCurrentLocation(context);
                   Navigator.pop(context);

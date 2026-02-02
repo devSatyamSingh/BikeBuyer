@@ -76,6 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Text(
                   "Create Account",
                   style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: ScreenWidth * 0.047,
                     fontWeight: FontWeight.w600,
                   ),
@@ -87,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Text(
                   "Create your account to explore bikes easily",
                   style: TextStyle(
+                    fontFamily: 'Poppins',
                     color: Colors.grey.shade600,
                     fontSize: ScreenWidth * 0.032,
                   ),
@@ -239,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.only(left: 20, top: 5),
                   child: Text(
                     "City required",
-                    style: TextStyle(color: Colors.red, fontSize: 12),
+                    style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'Poppins',),
                   ),
                 ),
               SizedBox(height: 20),

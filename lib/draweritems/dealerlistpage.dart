@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DealerListPage extends StatelessWidget {
   final String brandName;
@@ -28,6 +29,18 @@ class DealerListPage extends StatelessWidget {
       },
     ];
 
+    Future<void> callDealer(String phone) async {
+      final Uri uri = Uri(scheme: 'tel', path: phone);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        throw 'Could not launch dialer';
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -35,12 +48,15 @@ class DealerListPage extends StatelessWidget {
           "$brandName Dealers",
           style: TextStyle(
             fontWeight: FontWeight.w500,
+            fontFamily: 'Poppins',
             fontSize: w * 0.045,
           ),
         ),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(w * 0.04),
@@ -48,8 +64,8 @@ class DealerListPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final dealer = dealers[index];
           return Container(
-            margin: EdgeInsets.only(bottom: h * 0.023),
-            padding: EdgeInsets.all(w * 0.052),
+            margin: EdgeInsets.only(bottom: h * 0.022),
+            padding: EdgeInsets.all(w * 0.053),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(w * 0.05),
@@ -67,7 +83,8 @@ class DealerListPage extends StatelessWidget {
                   dealer["name"],
                   style: TextStyle(
                     fontSize: w * 0.044,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: h * 0.008),
@@ -83,7 +100,8 @@ class DealerListPage extends StatelessWidget {
                       child: Text(
                         dealer["address"],
                         style: TextStyle(
-                          fontSize: w * 0.035,
+                          fontFamily: 'Poppins',
+                          fontSize: w * 0.033,
                           color: Colors.black54,
                         ),
                       ),
@@ -102,7 +120,7 @@ class DealerListPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // launch("tel:${dealer["phone"]}");
+                      callDealer(dealer["phone"]);
                     },
                     icon: Icon(
                       Icons.call,
@@ -113,6 +131,7 @@ class DealerListPage extends StatelessWidget {
                       "Call Dealer",
                       style: TextStyle(
                         fontSize: w * 0.04,
+                        fontFamily: 'Poppins',
                         color: Colors.white,
                       ),
                     ),

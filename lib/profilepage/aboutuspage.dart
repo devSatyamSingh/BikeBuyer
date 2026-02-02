@@ -10,8 +10,11 @@ class AboutUsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
-        elevation: 2,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        titleSpacing: 3,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -21,7 +24,7 @@ class AboutUsPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           "About Us",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins',),
         ),
       ),
       body: SingleChildScrollView(
@@ -38,8 +41,9 @@ class AboutUsPage extends StatelessWidget {
               Text(
                 "About BikeBuyer",
                 style: TextStyle(
-                  fontSize: w * 0.046,
-                  fontWeight: FontWeight.bold,
+                  fontSize: w * 0.044,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 12),
@@ -101,7 +105,8 @@ class AboutUsPage extends StatelessWidget {
                 "Thank you for choosing BikeBuyer.",
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -119,7 +124,8 @@ class AboutUsPage extends StatelessWidget {
         text,
         style: TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -129,8 +135,9 @@ class AboutUsPage extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: 15,
+        fontSize: 14,
         height: 1.6,
+        fontFamily: 'Poppins',
         color: Colors.black87,
       ),
     );
@@ -149,6 +156,7 @@ class AboutUsPage extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 15,
+                fontFamily: 'Poppins',
                 height: 1.4,
               ),
             ),

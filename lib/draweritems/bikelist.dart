@@ -73,9 +73,12 @@ class BikeListPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Bikes", style: TextStyle(fontWeight: FontWeight.w500),),
+        title: Text("Bikes", style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
-        elevation: 1,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(14),
@@ -85,14 +88,14 @@ class BikeListPage extends StatelessWidget {
           return Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            margin: const EdgeInsets.only(bottom: 20, left: 13, right: 13),
+            margin: const EdgeInsets.only(bottom: 18, left: 12, right: 13),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
                   bike["img"]!,
-                  height: 280,
-                  width: 366,
+                  height: 260,
+                  width: 350,
                   fit: BoxFit.contain,
                 ),
                 Padding(
@@ -103,15 +106,16 @@ class BikeListPage extends StatelessWidget {
                       Text(
                         bike["name"]!,
                         style:TextStyle(
-                            fontSize: 19, fontWeight: FontWeight.bold),
+                            fontSize: 19, fontFamily: 'Poppins', fontWeight: FontWeight.w500),
                       ),
                       SizedBox(height: 6),
                       Text(
                         bike["price"]!,
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 17,
                             color: Colors.green,
-                            fontWeight: FontWeight.bold),
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500),
                       ),
                       SizedBox(height: 14),
                       GestureDetector(
@@ -125,7 +129,7 @@ class BikeListPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.purple
                           ),
-                          child: Center(child: Text("View Bike Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),)),
+                          child: Center(child: Text("View Bike Details", style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 17),)),
                         ),
                       )
                     ],

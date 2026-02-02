@@ -44,13 +44,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   "Welcome to BikeBuyer",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenWidth*0.034,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    fontSize: screenWidth*0.033,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
                   "Buy & Sell Bikes",
-                  style: TextStyle(color: Colors.white70),
+                  style: TextStyle(color: Colors.white70, fontFamily: 'Poppins',),
                 ),
               ],
             ),
@@ -70,8 +71,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               child: Text(
                 "Connect with us",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: screenWidth*0.037,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                  fontSize: screenWidth*0.036,
                 ),
               ),
             ),
@@ -141,7 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget drawerTile(BuildContext context, String title, Widget page) {
     return ListTile(
       visualDensity: VisualDensity(vertical: -1),
-      title: Text(title, style: TextStyle(fontSize: 16)),
+      title: Text(title, style: TextStyle(fontSize: 16, fontFamily: 'Poppins',)),
       trailing: Icon(Icons.arrow_forward_ios, size: 15),
       onTap: () {
         Navigator.pop(context);

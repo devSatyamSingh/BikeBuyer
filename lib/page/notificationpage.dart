@@ -10,15 +10,19 @@ class NotificationPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
-        elevation: 2,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
+        foregroundColor: Colors.black,
+        elevation: 0,
+        titleSpacing: 3,
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
           "Notifications",
           style: TextStyle(
               color: Colors.black,
+              fontFamily: 'Poppins',
               fontWeight: FontWeight.w500
           ),
         ),
@@ -76,7 +80,7 @@ class NotificationPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: isNew
             ? Colors.purple.shade50
-            : Colors.grey.shade100,
+            : Colors.white,
         borderRadius: BorderRadius.circular(
           screenWidth * 0.03,
         ),
@@ -105,8 +109,9 @@ class NotificationPage extends StatelessWidget {
                       child: Text(
                         title,
                         style: TextStyle(
-                          fontSize: screenWidth * 0.038,
-                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Poppins',
+                          fontSize: screenWidth * 0.037,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -126,6 +131,7 @@ class NotificationPage extends StatelessWidget {
                           "NEW",
                           style: TextStyle(
                             color: Colors.white,
+                            fontFamily: 'Poppins',
                             fontSize: screenWidth * 0.025,
                           ),
                         ),
@@ -138,7 +144,8 @@ class NotificationPage extends StatelessWidget {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: screenWidth * 0.032,
+                    fontFamily: 'Poppins',
+                    fontSize: screenWidth * 0.031,
                     color: Colors.grey.shade700,
                   ),
                 ),
@@ -148,6 +155,7 @@ class NotificationPage extends StatelessWidget {
                 Text(
                   time,
                   style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: screenWidth * 0.03,
                     color: Colors.grey,
                   ),

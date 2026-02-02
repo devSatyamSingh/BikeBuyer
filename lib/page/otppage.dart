@@ -101,7 +101,8 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                 Text(
                   "OTP Verification",
                   style: TextStyle(
-                    fontSize: ScreenWidth*0.052,
+                    fontFamily: 'Poppins',
+                    fontSize: ScreenWidth*0.050,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -113,7 +114,8 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                 Text(
                   " OTP has been Sent to +91 ${widget.phone}",
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
                       fontSize: 14,
                       color: Colors.grey.shade700),
                 ),
@@ -237,6 +239,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     child: Text(
                       "Verify OTP",
                       style: TextStyle(
+                        fontFamily: 'Poppins',
                         color: Colors.white,
                         fontSize: ScreenWidth * 0.045,
                       ),
@@ -249,7 +252,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
             Center(
                 child: Text('otp 1234 hai',
                     style:
-                    TextStyle(fontSize: 10, color: Colors.grey))),
+                    TextStyle(fontSize: 10, color: Colors.grey, fontFamily: 'Poppins',))),
             SizedBox(height: 15),
             Center(
               child: Column(
@@ -258,6 +261,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     "Didn't receive OTP?",
                     style: TextStyle(
                         color: Colors.black54,
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: ScreenHeight*0.005),
@@ -269,7 +273,8 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     child: Text(
                       "Resend OTP",
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Poppins',
                           color: Colors.purple),
                     ),
                   )
@@ -277,6 +282,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     "Resend available in $resendTime s",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
+                        fontFamily: 'Poppins',
                         color: Colors.black54,
                         fontSize: ScreenWidth*0.030),
                   ),

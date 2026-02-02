@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../homepages/location_provider.dart';
 import '../widget/locationbottomsheet.dart';
 
@@ -21,37 +22,53 @@ class _ServiceCenterListPageState extends State<ServiceCenterListPage> {
     {
       "name": "ASA Riders LLP - Raj Nagar",
       "address":
-      "KH No- 871, Noor Nagar, Raj Nagar extn, Ghaziabad, Uttar Pradesh, 201017",
+      "Noor Nagar, Raj Nagar extn, Ghaziabad, Uttar Pradesh, 201017",
       "phone": "91828706348",
     },
     {
       "name": "Amar Autos - Vijay Nagar",
       "address":
-      "No A 640/6, Vijay Nagar, Sector 9, Ghaziabad, Uttar Pradesh, 201009",
+      "Vijay Nagar, Sector 9, Ghaziabad, Uttar Pradesh, 201009",
       "phone": "91828706348",
     },
     {
       "name": "Rawat Automobiles Pvt Ltd - Rakeshmarg",
       "address":
-      "III-F, 87, Nehru Nagar Rakeshmarg, Ghaziabad, Uttar Pradesh, 201002",
+      "Nehru Nagar Rakeshmarg, Ghaziabad, Uttar Pradesh, 201002",
       "phone": "91935035311",
     },
   ];
 
+
+  Future<void> openMapByAddress(String address) async {
+    final url = "https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}";
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw "Could not open Google Maps";
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: Text(
           "${widget.brandName} Service Centers",
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins', ),
         ),
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
+        elevation: 0,
+        titleSpacing: 3,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -66,14 +83,14 @@ class _ServiceCenterListPageState extends State<ServiceCenterListPage> {
                     children: [
                       const Icon(Icons.location_on, color: Colors.grey, size: 18,),
                       const SizedBox(width: 4),
-                      Text(loc.city, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+                      Text(loc.city, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins', fontSize: 16)),
                     ],
                   ),
                   TextButton(
                     onPressed: () {
                       showLocationBottomSheet(context);
                     },
-                    child: const Text("Change"),
+                    child: Text("Change"),
                   ),
                 ],
               ),
@@ -101,6 +118,7 @@ class _ServiceCenterListPageState extends State<ServiceCenterListPage> {
                           center["name"],
                           style: TextStyle(
                             fontSize: w * 0.041,
+                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -114,7 +132,7 @@ class _ServiceCenterListPageState extends State<ServiceCenterListPage> {
                             Expanded(
                               child: Text(
                                 center["address"],
-                                style: TextStyle(color: Colors.black54),
+                                style: TextStyle(color: Colors.black54, fontFamily: 'Poppins',),
                               ),
                             ),
                           ],
@@ -127,21 +145,26 @@ class _ServiceCenterListPageState extends State<ServiceCenterListPage> {
                             SizedBox(width: 6),
                             Text(
                               center["phone"],
-                              style: TextStyle(color: Colors.black54),
+                              style: TextStyle(color: Colors.black54, fontFamily: 'Poppins',),
                             ),
                           ],
                         ),
                         SizedBox(height: 14),
-                        Container(
-                          width: double.infinity,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: Colors.purple.shade400,
-                            borderRadius: BorderRadius.circular(16)
-                          ), child: Center(
-                            child: Text(
-                            "Location",
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 20),),
+                        GestureDetector(
+                          onTap: () {
+                            openMapByAddress(center["address"]);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.purple.shade400,
+                              borderRadius: BorderRadius.circular(16)
+                            ), child: Center(
+                              child: Text(
+                              "Location",
+                              style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 20),),
+                            ),
                           ),
                         ),
                       ],

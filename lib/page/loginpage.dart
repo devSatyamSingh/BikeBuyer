@@ -37,10 +37,11 @@ class _LoginPageState extends State<LoginPage> {
                 "Login or Register",
                 style: TextStyle(
                   fontSize: ScreenWidth * 0.05,
+                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text("Enter your mobile number to get OTP and login securely.", style: TextStyle(fontSize: ScreenWidth * 0.03, color: Colors.grey.shade600),),
+              Text("Enter your mobile number to get OTP and login securely.", style: TextStyle(fontSize: ScreenWidth * 0.03, fontFamily: 'Poppins', color: Colors.grey.shade600),),
               SizedBox(height: ScreenHeight * 0.016),
               Form(
                 key: _formKey,
@@ -64,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                                   "+91",
                                   style: TextStyle(
                                     fontSize: ScreenWidth * 0.04,
+                                    fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -148,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                       "Send OTP",
                       style: TextStyle(
                         color: Colors.white,
+                        fontFamily: 'Poppins',
                         fontSize: ScreenWidth * 0.045,
                       ),
                     ),
@@ -157,10 +160,10 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?", style: TextStyle(color: Colors.black),),
+                  Text("Don't have an account?", style: TextStyle(color: Colors.black, fontFamily: 'Poppins',),),
                   TextButton(onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
-                  }, child: Text('Sign up', style: TextStyle(color: Colors.black87),))
+                  }, child: Text('Sign up', style: TextStyle(color: Colors.black87, fontFamily: 'Poppins',),))
                 ],
               ),
 

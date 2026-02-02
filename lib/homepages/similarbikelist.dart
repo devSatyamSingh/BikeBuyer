@@ -168,8 +168,9 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
         Text(
           "Similar Bikes",
           style: TextStyle(
-            fontSize: widget.w * 0.045,
-            fontWeight: FontWeight.bold,
+            fontSize: widget.w * 0.044,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: widget.h * 0.017),
@@ -214,7 +215,7 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           bike["name"],
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
                         ),
                       ),
                       SizedBox(height: 4),
@@ -222,7 +223,8 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                         bike["price"],
                         style: TextStyle(
                           color: Colors.green,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(height: 15),

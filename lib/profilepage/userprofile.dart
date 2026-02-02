@@ -15,6 +15,10 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  String userName = "Satyam Singh";
+  String userNumber = "9161440593";
+
   @override
   Widget build(BuildContext context) {
 
@@ -22,7 +26,7 @@ class _UserProfileState extends State<UserProfile> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.purple.shade100.withOpacity(0.3),
+      backgroundColor: Colors.grey.shade200,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth * 0.05,
@@ -31,7 +35,7 @@ class _UserProfileState extends State<UserProfile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(screenWidth * 0.0065),
+              padding: EdgeInsets.all(screenWidth * 0.0062),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.purple.shade100,
@@ -43,27 +47,35 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
               child: CircleAvatar(
-                radius: screenWidth * 0.11,
+                radius: screenWidth * 0.10,
                 backgroundColor: Colors.grey.shade200,
-                child: Icon(
-                  Icons.person,
-                  size: screenWidth * 0.16,
-                  color: Colors.purple,
+                child: Text(
+                  userName.isNotEmpty
+                      ? userName[0].toUpperCase()
+                      : "U",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.11,
+                    fontFamily: 'Poppins',
+                    color: Colors.purple,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: screenHeight * 0.009),
+        SizedBox(height: screenHeight * 0.009),
             Text(
-              "Satyam Singh",
+              userName,
               style: TextStyle(
                 fontSize: screenWidth * 0.045,
-                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(height: screenHeight * 0.005),
             Text(
-              "+91 9161440593",
+              "+91 $userNumber",
               style: TextStyle(
+                fontFamily: 'Poppins',
                 fontSize: screenWidth * 0.035,
                 color: Colors.black54,
               ),
@@ -73,13 +85,24 @@ class _UserProfileState extends State<UserProfile> {
               context: context,
               icon: IconlyLight.profile,
               title: "Profile Settings",
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileSettings(),
+                    builder: (context) => ProfileSettings(
+                      name: userName,
+                      number: userNumber,
+                    ),
                   ),
                 );
+
+                if (result != null) {
+                  setState(() {
+                    userName = result["name"];
+                    userNumber = result["number"];
+                  });
+                }
               },
             ),
             profileTile(
@@ -176,6 +199,7 @@ Widget profileTile({
               title,
               style: TextStyle(
                 fontSize: screenWidth * 0.038,
+                fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
                 color: isLogout ? Colors.red : Colors.black,
               ),

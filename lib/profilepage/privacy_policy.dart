@@ -11,8 +11,11 @@ class PrivacyPolicyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
-        elevation: 2,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        titleSpacing: 3,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -22,7 +25,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           "Privacy Policy",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins',),
         ),
       ),
       body: SingleChildScrollView(
@@ -39,8 +42,9 @@ class PrivacyPolicyPage extends StatelessWidget {
               Text(
                 "Privacy Policy",
                 style: TextStyle(
-                  fontSize: w * 0.046,
-                  fontWeight: FontWeight.bold,
+                  fontSize: w * 0.044,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 4),
@@ -48,6 +52,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 "Last updated: 2026",
                 style: TextStyle(
                   fontSize: 12,
+                  fontFamily: 'Poppins',
                   color: Colors.grey,
                 ),
               ),
@@ -141,8 +146,9 @@ class PrivacyPolicyPage extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontSize: 15,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -154,6 +160,7 @@ class PrivacyPolicyPage extends StatelessWidget {
       style: TextStyle(
         fontSize: 14,
         height: 1.6,
+        fontFamily: 'Poppins',
         color: Colors.black87,
       ),
     );
