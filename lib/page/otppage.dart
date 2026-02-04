@@ -6,6 +6,8 @@ import 'package:iconly/iconly.dart';
 import 'package:pinput/pinput.dart';
 import 'dart:async';
 
+import '../widget/pagenavigationanimation.dart';
+
 class OtpVerifyPage extends StatefulWidget {
   final String phone;
   OtpVerifyPage({required this.phone});
@@ -205,9 +207,10 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                   return;
                 }
                 if (otpCode == validOtp) {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => HomeTabs()),
+                    SlidePageRoute(page: HomeTabs()),
+                        (route) => false,
                   );
                 } else {
                   setState(() {
@@ -227,9 +230,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     gradient: isOtpComplete
                         ? LinearGradient(
                       colors: [
-                        Color(0xffCA48CE),
-                        Color(0xff7A34BD),
-                        Color(0xffC98BBE),
+                        Colors.purple, Colors.deepPurple
                       ],
                     )
                     : null,

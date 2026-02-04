@@ -2,6 +2,7 @@ import 'package:bikebuyer/homepages/contact_dealer.dart';
 import 'package:bikebuyer/homepages/send_inquiry.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import '../widget/pagenavigationanimation.dart';
 import 'similarbikelist.dart';
 import 'fullscreenimg.dart';
 
@@ -51,7 +52,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
             Stack(
               children: [
                 SizedBox(
-                  height: h * 0.48,
+                  height: h * 0.38,
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount: widget.bike["images"].length,
@@ -72,9 +73,15 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                               ),
                             );
                           },
-                          child: Image.asset(
-                            widget.bike["images"][index],
-                            fit: BoxFit.contain,
+                          child: Center(
+                            child: SizedBox(
+                              height: h * 0.32,   // 👈 actual image height
+                              width: w * 0.75,
+                              child: Image.asset(
+                                widget.bike["images"][index],
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
                         ),
                       );
@@ -95,11 +102,11 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                       });
                     },
                     child: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 300),
+                      duration: Duration(milliseconds: 250),
                       transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
                       child: CircleAvatar(
                         key: ValueKey(isWishlisted),
-                        radius: 18,
+                        radius: 20,
                         backgroundColor: Colors.grey.shade100,
                         child: Icon(
                           isWishlisted ? IconlyBold.heart : IconlyLight.heart,
@@ -253,7 +260,7 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                    infoRow("Mileage", widget.bike["km"]),
                    infoRow("Engine", widget.bike["cc"]),
                    infoRow("Fuel Type", widget.bike["fuel"]),
-                  SizedBox(height: 26),
+                  SizedBox(height: 20),
                   SimilarBikesSection(w: w, h: h),
                   SizedBox(height: 20),
                   Column(
@@ -279,7 +286,10 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
             Expanded(
               child:GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SendInquiryPage()));
+                  Navigator.push(
+                    context,
+                    SlidePageRoute(page: SendInquiryPage()),
+                  );
                 },
                 child: Container(
                   width: 200,
@@ -304,16 +314,14 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => ContactDealerPage(
-                        seller: {
-                          "name": "Shiv Motors",
-                          "phone": "7860701843",
-                          "whatsapp": "7860701843",
-                          "location": "Ayodhya, UP",
-                        },
-                      ),
-                    ),
+                    SlidePageRoute(page: ContactDealerPage(
+                      seller: {
+                        "name": "Shiv Motors",
+                        "phone": "7860701843",
+                        "whatsapp": "7860701843",
+                        "location": "Ayodhya, UP",
+                      },
+                    ),),
                   );
                 },
                 child: Container(
@@ -348,9 +356,9 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
       child: GestureDetector(
         onTap: onTap,
         child: CircleAvatar(
-          radius: 18,
+          radius: 20,
           backgroundColor: Colors.grey.shade100,
-          child: Icon(icon, size: 18, color: Colors.black),
+          child: Icon(icon, size: 22, color: Colors.black),
         ),
       ),
     );

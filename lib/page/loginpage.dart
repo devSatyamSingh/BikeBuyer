@@ -3,6 +3,8 @@ import 'package:bikebuyer/page/signuppage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
+import '../widget/pagenavigationanimation.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -118,9 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                   if (_formKey.currentState!.validate()) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            OtpVerifyPage(phone: phoneController.text),
+                      SlidePageRoute(
+                        page: OtpVerifyPage(phone: phoneController.text),
                       ),
                     );
                   }
@@ -137,9 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     gradient: isPhoneValid
                         ? LinearGradient(
                       colors: [
-                        Color(0xffCA48CE),
-                        Color(0xff7A34BD),
-                        Color(0xffC98BBE),
+                        Colors.purple, Colors.deepPurple
                       ],
                     )
                    : null,

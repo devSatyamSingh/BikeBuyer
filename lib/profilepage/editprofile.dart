@@ -94,18 +94,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 SizedBox(
                   height: h*0.050,
-                  width: w*0.40,
+                  width: w*0.41,
                   child: OutlinedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Cancel", style: TextStyle(fontFamily: 'Poppins',),),
+                    child: Center(child: Text("Cancel", style: TextStyle(fontFamily: 'Poppins', fontSize: w*0.031),)),
                   ),
                 ),
-                SizedBox(width: w*0.033),
+                SizedBox(width: w*0.030),
                 SizedBox(
                   height: h*0.050,
-                  width: w*0.40,
+                  width: w*0.41,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context, {
@@ -116,7 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,
                     ),
-                    child: Text("Save Changes", style: TextStyle(color: Colors.white, fontFamily: 'Poppins',),),
+                    child: Center(child: Text("Save Changes", style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontSize: w*0.031),)),
                   ),
                 ),
               ],

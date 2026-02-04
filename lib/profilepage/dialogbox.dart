@@ -7,6 +7,7 @@ Future<void> showLogoutDialog(BuildContext context) {
     barrierDismissible: true,
     builder: (context) {
       return Dialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
         ),

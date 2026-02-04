@@ -10,8 +10,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import '../draweritems/customdrawer.dart';
 import 'package:provider/provider.dart';
+import '../profilepage/terms_condi.dart';
 import '../widget/locationbottomsheet.dart';
+import '../widget/pagenavigationanimation.dart';
 import 'bikedetailpage.dart';
+import '../filter/filterpage.dart';
 import 'brandbikespage.dart';
 import 'location_provider.dart';
 
@@ -27,14 +30,17 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
   final FocusNode locationFocus = FocusNode();
-  late List allBikes; // master list
-  List filteredBikes = []; // search result
+  late List<Map<String, dynamic>> allBikes;
+  List<Map<String, dynamic>> filteredBikes = [];
   bool isSearching = false;
 
   List bikes = [
     {
       "name": "Royal Enfield Classic 350",
       "price": "₹1.90 Lakh",
+      "priceValue": 190000,
+      "ccValue": 350,         // 👈 new
+      "year": 2021,
       "brand": "Royal Enfield",
       "cc": "349 cc",
       "km": "35 kmpl",
@@ -57,6 +63,9 @@ class _HomePageState extends State<HomePage> {
       "name": "Yamaha R15 V4",
       "price": "₹1.82 Lakh",
       "brand": "Yamaha",
+      "priceValue": 182000,
+      "ccValue": 155,         // 👈 new
+      "year": 2022,
       "cc": "155 cc",
       "km": "45 kmpl",
       "runKm": "5,500 km",
@@ -78,7 +87,10 @@ class _HomePageState extends State<HomePage> {
       "name": "KTM Duke 200",
       "price": "₹1.96 Lakh",
       "brand": "KTM",
-      "cc": "199 cc",
+      "priceValue": 196000,
+      "ccValue": 200,         // 👈 new
+      "year": 2021,
+      "cc": "200 cc",
       "km": "33 kmpl",
       "runKm": "8,300 km",
       "fuel": "Petrol",
@@ -100,6 +112,9 @@ class _HomePageState extends State<HomePage> {
       "price": "₹1.34 Lakh",
       "brand": "Bajaj",
       "cc": "220 cc",
+      "priceValue": 134000,
+      "ccValue": 220,         // 👈 new
+      "year": 2020,
       "km": "40 kmpl",
       "runKm": "10,000 km",
       "fuel": "Petrol",
@@ -123,6 +138,9 @@ class _HomePageState extends State<HomePage> {
       "name": "Hero Splendor Plus",
       "price": "₹74,000",
       "brand": "Hero",
+      "priceValue": 74000,
+      "ccValue": 97,         // 👈 new
+      "year": 2019,
       "cc": "97 cc",
       "km": "65 kmpl",
       "runKm": "18,000 km",
@@ -144,6 +162,9 @@ class _HomePageState extends State<HomePage> {
       "name": "TVS Raider",
       "price": "₹80,750",
       "brand": "TVS",
+      "priceValue": 80000,
+      "ccValue": 125,         // 👈 new
+      "year": 2022,
       "cc": "125 cc",
       "km": "56 kmpl",
       "runKm": "6,500 km",
@@ -165,11 +186,14 @@ class _HomePageState extends State<HomePage> {
       "name": "Bajaj Pulsar 125",
       "price": "₹85,000",
       "brand": "Bajaj",
+      "priceValue": 85000,
+      "ccValue": 125,
+      "year": 2024,
       "cc": "125 cc",
       "km": "50 kmpl",
       "runKm": "9,200 km",
       "fuel": "Petrol",
-      "regYear": "2021",
+      "regYear": "2024",
       "owner": "1st Owner",
       "rto": "UP32",
       "location": "Ayodhya, UP",
@@ -186,11 +210,14 @@ class _HomePageState extends State<HomePage> {
       "name": "Honda Shine",
       "price": "₹79,000",
       "brand": "Honda",
+      "priceValue": 79000,
+      "ccValue": 125,
+      "year": 2025,
       "cc": "125 cc",
       "km": "55 kmpl",
       "runKm": "11,000 km",
       "fuel": "Petrol",
-      "regYear": "2020",
+      "regYear": "2025",
       "owner": "2nd Owner",
       "rto": "UP32",
       "location": "Prayagraj, UP",
@@ -207,11 +234,14 @@ class _HomePageState extends State<HomePage> {
       "name": "Yamaha FZ",
       "price": "₹1.20 Lakh",
       "brand": "Yamaha",
+      "priceValue": 120000,
+      "ccValue": 149,
+      "year": 2025,
       "cc": "149 cc",
       "km": "48 kmpl",
       "runKm": "7,800 km",
       "fuel": "Petrol",
-      "regYear": "2021",
+      "regYear": "2025",
       "owner": "1st Owner",
       "rto": "UP62",
       "location": "Jaunpur, UP",
@@ -233,7 +263,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List brands = [
-    {"name": "Bajaj", "img": "assets/images/Bajajlogo.webp", "brand": "Yamaha"},
+    {"name": "Bajaj", "img": "assets/images/Bajajlogo.webp",},
     {"name": "Hero", "img": "assets/images/herologo.png"},
     {"name": "Kawasaki", "img": "assets/images/kawa2logo.webp"},
     {"name": "Honda", "img": "assets/images/hondalogo3.jpg"},
@@ -352,7 +382,8 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
+                SlidePageRoute(page: NotificationPage()
+                ),
               );
             },
           ),
@@ -492,9 +523,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (_) => BikeDetailPage(bike: bike),
-                                ),
+                                SlidePageRoute(page: BikeDetailPage(bike: bike)),
                               );
                             },
                             child: buildBikeCard(bike),
@@ -543,7 +572,42 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: h * 0.020),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        icon: Icon(Icons.tune, color: Colors.black),
+                        label: Text(
+                          "Filters",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: BorderSide(color: Colors.grey.shade300),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => FilterPage(
+                                allBikes: allBikes,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                ),
+                SizedBox(height: h * 0.018),
                 Text(
                   "Popular Bikes",
                   style: TextStyle(
@@ -569,9 +633,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => BikeDetailPage(bike: bikes[index]),
-                          ),
+                          SlidePageRoute(page: BikeDetailPage(bike: bikes[index])),
                         );
                       },
                       child: Container(
@@ -660,9 +722,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => BikeDetailPage(bike: bike),
-                            ),
+                            SlidePageRoute(page: BikeDetailPage(bike: bike)),
                           );
                         },
                         child: Container(
@@ -754,19 +814,15 @@ class _HomePageState extends State<HomePage> {
                     return GestureDetector(
                       onTap: () {
                         List allBikes = [...bikes, ...bikeList];
-
                         List filteredBikes = allBikes.where((bike) {
                           return bike["brand"] == brand["name"];
                         }).toList();
-
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => BrandBikesPage(
-                              brandName: brand["name"],
-                              bikes: filteredBikes,
-                            ),
-                          ),
+                          SlidePageRoute(page: BrandBikesPage(
+                            brandName: brand["name"],
+                            bikes: filteredBikes,
+                          ),),
                         );
                       },
                       child: Container(

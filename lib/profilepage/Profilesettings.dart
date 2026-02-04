@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/pagenavigationanimation.dart';
 import 'editprofile.dart';
 
 class ProfileSettings extends StatefulWidget {
@@ -105,17 +106,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             SizedBox(height: h*0.020),
             InkWell(
               onTap: () async {
-                final result = await Navigator.push(
+                final result = await
+                Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EditProfilePage(
-                          name: userName,
-                          number: userNumber,
-                        ),
-                  ),
+                  SlidePageRoute(page: EditProfilePage(
+                    name: userName,
+                    number: userNumber,
+                  ),),
                 );
-
                 if (result != null) {
                   setState(() {
                     userName = result["name"];
@@ -142,7 +140,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
-                      fontSize: 17,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

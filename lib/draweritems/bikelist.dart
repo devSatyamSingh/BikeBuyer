@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../homepages/bikedetailpage.dart';
+import '../widget/pagenavigationanimation.dart';
 
 class BikeListPage extends StatelessWidget {
   BikeListPage({super.key});
@@ -23,17 +23,12 @@ class BikeListPage extends StatelessWidget {
     },
     {
       "name": "Hero Splendor Plus",
-      "price": "₹82,000 Lakh",
+      "price": "₹82,000",
       "img": "assets/images/hero1.webp",
     },
     {
-      "name": "Yamaha R15 V4",
-      "price": "₹1.82 Lakh",
-      "img": "assets/images/R15.webp",
-    },
-    {
-      "name": "Honda SHine ",
-      "price": "₹72,000 Lakh",
+      "name": "Honda Shine",
+      "price": "₹72,000",
       "img": "assets/images/honda.jpg",
     },
   ];
@@ -50,92 +45,145 @@ class BikeListPage extends StatelessWidget {
       "owner": "1st Owner",
       "rto": "UP32",
       "location": "Ayodhya, UP",
-      "images": [
-        bike["img"],
-        bike["img"],
-        bike["img"],
-        bike["img"],
-        bike["img"],
-      ],
+      "images": List.generate(5, (_) => bike["img"]),
     };
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => BikeDetailPage(bike: fullBike),
-      ),
+      SlidePageRoute(page: BikeDetailPage(bike: fullBike)),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text("Bikes", style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),),
-        toolbarHeight: 60,
+        title: Text(
+          "Bikes",
+          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
+        ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
-        titleSpacing: 3,
       ),
+
       body: ListView.builder(
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         itemCount: bikes.length,
         itemBuilder: (context, index) {
           final bike = bikes[index];
           return Card(
             color: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            margin: const EdgeInsets.only(bottom: 18, left: 12, right: 13),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  bike["img"]!,
-                  height: 260,
-                  width: 350,
-                  fit: BoxFit.contain,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(19),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:[
-                      Text(
-                        bike["name"]!,
-                        style:TextStyle(
-                            fontSize: 19, fontFamily: 'Poppins', fontWeight: FontWeight.w500),
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            margin: const EdgeInsets.only(bottom: 17, left: 10, right: 10),
+            child: Container(
+              height: 305,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.6),
+                    blurRadius: 7,
+                    offset: Offset(2, 7),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 170,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
                       ),
-                      SizedBox(height: 6),
-                      Text(
-                        bike["price"]!,
-                        style: TextStyle(
-                            fontSize: 17,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.white, Colors.white],
+                      ),
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.grey.shade300,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: AspectRatio(
+                            aspectRatio: 16 / 10,
+                            child: Image.asset(bike["img"]!, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 14, 14, 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          bike["name"]!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          bike["price"]!,
+                          style: TextStyle(
+                            fontSize: 15,
                             color: Colors.green,
                             fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: 14),
-                      GestureDetector(
-                        onTap: () {
-                          openBikeDetails(context, bike);
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 360,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.purple
+                            fontWeight: FontWeight.w500,
                           ),
-                          child: Center(child: Text("View Bike Details", style: TextStyle(color: Colors.white, fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 17),)),
                         ),
-                      )
-                    ],
+                        SizedBox(height: 12),
+                        GestureDetector(
+                          onTap: () {
+                            openBikeDetails(context, bike);
+                          },
+                          child: Container(
+                            height: 45,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: LinearGradient(
+                                colors: [Colors.purple, Colors.deepPurple],
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                "View Bike Details",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

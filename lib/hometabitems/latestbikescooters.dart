@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../homepages/bikedetailpage.dart';
+import '../widget/pagenavigationanimation.dart';
 
 class LatestBikeScooterTab extends StatefulWidget {
   const LatestBikeScooterTab({super.key});
@@ -79,9 +80,7 @@ class _LatestBikeScooterTabState extends State<LatestBikeScooterTab> {
     };
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => BikeDetailPage(bike: detailBike),
-      ),
+      SlidePageRoute(page: BikeDetailPage(bike: detailBike)),
     );
   }
   @override

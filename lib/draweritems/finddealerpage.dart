@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/pagenavigationanimation.dart';
 import 'dealerlistpage.dart';
 
 class Finddealerpage extends StatefulWidget {
@@ -81,10 +82,9 @@ class _FinddealerpageState extends State<Finddealerpage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => DealerListPage(
-                            brandName: brand["name"]!,
-                          ),
+                        SlidePageRoute(page:DealerListPage(
+                          brandName: brand["name"]!,
+                        ),
                         ),
                       );
                     },

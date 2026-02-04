@@ -1,6 +1,8 @@
 import 'package:bikebuyer/draweritems/servicecenterlist.dart';
 import 'package:flutter/material.dart';
 
+import '../widget/pagenavigationanimation.dart';
+
 class ServicesCenterPage extends StatefulWidget {
   const ServicesCenterPage({super.key});
 
@@ -81,10 +83,9 @@ class _ServicesCenterPageState extends State<ServicesCenterPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => ServiceCenterListPage(
-                            brandName: brand["name"]!,
-                          ),
+                        SlidePageRoute(page:ServiceCenterListPage(
+                          brandName: brand["name"]!,
+                        ),
                         ),
                       );
                     },

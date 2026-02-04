@@ -85,17 +85,17 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 32,
+                    radius: 30,
                     backgroundColor: Colors.purple.shade100,
-                    child: Icon(Icons.store, size: 34, color: Colors.purple),
+                    child: Icon(Icons.store, size: 33, color: Colors.purple),
                   ),
-                  SizedBox(height: 12),
+                  SizedBox(height: 10),
                   Text(
                     widget.seller["name"],
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: w * 0.048,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 6),

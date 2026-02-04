@@ -2,6 +2,7 @@ import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:flutter/material.dart';
 
 import '../homepages/bikedetailpage.dart';
+import '../widget/pagenavigationanimation.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -68,14 +69,11 @@ class _WishlistPageState extends State<WishlistPage> {
         filteredWishlist = List.from(wishlist);
       } else {
         filteredWishlist = wishlist.where((bike) {
-          return bike["name"]!
-              .toLowerCase()
-              .contains(query);
+          return bike["name"]!.toLowerCase().contains(query);
         }).toList();
       }
     });
   }
-
 
   void openBikeDetails(BuildContext context, Map<String, String> bike) {
     final Map<String, dynamic> fullBike = {
@@ -103,10 +101,14 @@ class _WishlistPageState extends State<WishlistPage> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => BikeDetailPage(bike: fullBike),
-      ),
+      SlidePageRoute(page: BikeDetailPage(bike: fullBike)),
     );
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
 
@@ -130,6 +132,7 @@ class _WishlistPageState extends State<WishlistPage> {
               setState(() {
                 isSearching = false;
                 searchController.clear();
+                filteredWishlist = List.from(wishlist);
               });
             } else {
               Navigator.push(
@@ -160,7 +163,7 @@ class _WishlistPageState extends State<WishlistPage> {
                 ),
               ),
         actions: [
-          if (wishlist.isNotEmpty)
+          if (!isSearching && wishlist.isNotEmpty)
             IconButton(
               icon: Icon(Icons.delete_outline),
               tooltip: "Clear All",
@@ -178,6 +181,7 @@ class _WishlistPageState extends State<WishlistPage> {
                   isSearching = !isSearching;
                   if (!isSearching) {
                     searchController.clear();
+                    filteredWishlist = List.from(wishlist);
                   }
                 });
               },
@@ -189,13 +193,24 @@ class _WishlistPageState extends State<WishlistPage> {
           ? const Center(
               child: Text(
                 "Your wishlist is empty ❤️",
-                style: TextStyle(fontSize: 16, fontFamily: 'Poppins',),
+                style: TextStyle(fontSize: 16, fontFamily: 'Poppins'),
+              ),
+            )
+          : filteredWishlist.isEmpty
+          ? Center(
+              child: Text(
+                "Bike not found 😕",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Poppins',
+                  color: Colors.grey,
+                ),
               ),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(12),
-                itemCount: filteredWishlist.length,
-                itemBuilder: (context, index) {
+              itemCount: filteredWishlist.length,
+              itemBuilder: (context, index) {
                 final bike = filteredWishlist[index];
 
                 return GestureDetector(
@@ -246,7 +261,7 @@ class _WishlistPageState extends State<WishlistPage> {
                               Text(
                                 bike["price"]!,
                                 style: TextStyle(
-                                  fontSize: w *0.031,
+                                  fontSize: w * 0.031,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -261,7 +276,7 @@ class _WishlistPageState extends State<WishlistPage> {
                               onSelected: (value) {
                                 if (value == "delete") {
                                   setState(() {
-                                    wishlist.remove(filteredWishlist[index]);
+                                    wishlist.removeWhere((item) => item["id"] == bike["id"]);
                                     filteredWishlist.removeAt(index);
                                   });
                                 } else if (value == "share") {}
@@ -273,7 +288,10 @@ class _WishlistPageState extends State<WishlistPage> {
                                     children: [
                                       Icon(Icons.share, size: h * 0.022),
                                       SizedBox(width: w * 0.016),
-                                      Text("Share", style: TextStyle(fontFamily: 'Poppins',),),
+                                      Text(
+                                        "Share",
+                                        style: TextStyle(fontFamily: 'Poppins'),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -283,7 +301,10 @@ class _WishlistPageState extends State<WishlistPage> {
                                     children: [
                                       Icon(Icons.delete, size: h * 0.022),
                                       SizedBox(width: w * 0.016),
-                                      Text("Remove", style: TextStyle(fontFamily: 'Poppins',),),
+                                      Text(
+                                        "Remove",
+                                        style: TextStyle(fontFamily: 'Poppins'),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -305,8 +326,14 @@ class _WishlistPageState extends State<WishlistPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Clear Wishlist", style: TextStyle(fontFamily: 'Poppins',),),
-          content: Text("Are you sure you want to remove all items from wishlist?", style: TextStyle(fontFamily: 'Poppins',),),
+          title: Text(
+            "Clear Wishlist",
+            style: TextStyle(fontFamily: 'Poppins'),
+          ),
+          content: Text(
+            "Are you sure you want to remove all items from wishlist?",
+            style: TextStyle(fontFamily: 'Poppins'),
+          ),
           actions: [
             OutlinedButton(
               onPressed: () {
@@ -317,9 +344,16 @@ class _WishlistPageState extends State<WishlistPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text("No", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Poppins',)),
+              child: Text(
+                "No",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontFamily: 'Poppins',
+                ),
+              ),
             ),
-            SizedBox(width: 7,),
+            SizedBox(width: 7),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -329,7 +363,10 @@ class _WishlistPageState extends State<WishlistPage> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Wishlist cleared successfully", style: TextStyle(fontFamily: 'Poppins',),),
+                    content: Text(
+                      "Wishlist cleared successfully",
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
                     behavior: SnackBarBehavior.floating,
                     duration: Duration(seconds: 2),
                   ),
@@ -341,7 +378,10 @@ class _WishlistPageState extends State<WishlistPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text("Yes", style: TextStyle(fontFamily: 'Poppins', color: Colors.black),),
+              child: Text(
+                "Yes",
+                style: TextStyle(fontFamily: 'Poppins', color: Colors.black),
+              ),
             ),
           ],
         );

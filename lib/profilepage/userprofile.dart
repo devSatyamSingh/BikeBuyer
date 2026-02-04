@@ -7,6 +7,9 @@ import 'package:bikebuyer/profilepage/dialogbox.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
+import '../homepages/hometabs.dart';
+import '../widget/pagenavigationanimation.dart';
+
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 
@@ -86,15 +89,12 @@ class _UserProfileState extends State<UserProfile> {
               icon: IconlyLight.profile,
               title: "Profile Settings",
               onTap: () async {
-
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileSettings(
-                      name: userName,
-                      number: userNumber,
-                    ),
-                  ),
+                  SlidePageRoute(page: ProfileSettings(
+                    name: userName,
+                    number: userNumber,
+                  ),),
                 );
 
                 if (result != null) {
@@ -112,8 +112,7 @@ class _UserProfileState extends State<UserProfile> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => TermsConditionPage(),
+                  SlidePageRoute(page: TermsConditionPage()
                   ),
                 );
               },
@@ -125,8 +124,7 @@ class _UserProfileState extends State<UserProfile> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => PrivacyPolicyPage(),
+                  SlidePageRoute(page: PrivacyPolicyPage()
                   ),
                 );
               },
@@ -138,8 +136,7 @@ class _UserProfileState extends State<UserProfile> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AboutUsPage(),
+                  SlidePageRoute(page: AboutUsPage()
                   ),
                 );
               },

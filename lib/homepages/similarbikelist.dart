@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widget/pagenavigationanimation.dart';
 import 'bikedetailpage.dart';
 
 class SimilarBikesSection extends StatefulWidget {
@@ -173,7 +174,7 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: widget.h * 0.017),
+        SizedBox(height: widget.h * 0.010),
         SizedBox(
           height: widget.h * 0.26,
           child: ListView.builder(
@@ -185,9 +186,7 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => BikeDetailPage(bike: bike),
-                    ),
+                    SlidePageRoute(page: BikeDetailPage(bike: bike)),
                   );
                 },
                 child: Container(
@@ -201,10 +200,17 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                     ],
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
+                      Container(
+                        height: widget.h * 0.15,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
                             bike["images"][0],
                             fit: BoxFit.cover,
@@ -212,9 +218,11 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           bike["name"],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
                         ),
                       ),
@@ -227,7 +235,6 @@ class _SimilarBikesSectionState extends State<SimilarBikesSection> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(height: 15),
                     ],
                   ),
                 ),

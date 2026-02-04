@@ -13,6 +13,8 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
+import '../widget/pagenavigationanimation.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -255,7 +257,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         cityController.text.isNotEmpty) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => HomeTabs()),
+                        SlidePageRoute(page: HomeTabs()),
                       );
                     }
                   },
@@ -267,9 +269,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       gradient: isFormValid
                           ? LinearGradient(
                               colors: [
-                                Color(0xffCA48CE),
-                                Color(0xff7A34BD),
-                                Color(0xffC98BBE),
+                                Colors.purple, Colors.deepPurple
                               ],
                             )
                           : null,
