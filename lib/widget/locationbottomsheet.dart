@@ -69,7 +69,7 @@ void showLocationBottomSheet(BuildContext context) {
                 getPlaceDetailWithLatLng: (prediction) {},
               ),
 
-              SizedBox(height: 16),
+              SizedBox(height: 14),
               ListTile(
                 leading: Icon(Icons.my_location, color: Colors.purple),
                 title: Text("Use current location", style: TextStyle(fontFamily: 'Poppins',),),
@@ -78,7 +78,7 @@ void showLocationBottomSheet(BuildContext context) {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
             ],
           ),
         ),

@@ -105,28 +105,28 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             ),
             SizedBox(height: h*0.020),
             InkWell(
-              onTap: () async {
-                final result = await
-                Navigator.push(
-                  context,
-                  SlidePageRoute(page: EditProfilePage(
-                    name: userName,
-                    number: userNumber,
-                  ),),
-                );
-                if (result != null) {
-                  setState(() {
-                    userName = result["name"];
-                    userNumber = result["number"];
-                    showFullNumber = false;
-                  });
-
-                  Navigator.pop(context, {
-                    "name": userName,
-                    "number": userNumber,
-                  });
-                }
-              },
+              // onTap: () async {
+              //   final result = await
+              //   Navigator.push(
+              //     context,
+              //     SlidePageRoute(page: EditProfilePage(
+              //       name: userName,
+              //       number: userNumber,
+              //     ),),
+              //   );
+              //   if (result != null) {
+              //     setState(() {
+              //       userName = result["name"];
+              //       userNumber = result["number"];
+              //       showFullNumber = false;
+              //     });
+              //
+              //     Navigator.pop(context, {
+              //       "name": userName,
+              //       "number": userNumber,
+              //     });
+              //   }
+              // },
                 child: Container(
                 width: w*0.58,
                 padding: const EdgeInsets.symmetric(vertical: 14),

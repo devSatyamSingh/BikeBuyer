@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widget/app_snackbar.dart';
+
 class ContactDealerPage extends StatefulWidget {
   final Map seller;
 
@@ -30,27 +32,32 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
   }
 
   Future<void> openWhatsApp(String phone) async {
-    final String whatsappUrl = "https://wa.me/$phone";
-    final Uri uri = Uri.parse(whatsappUrl);
+    if (phone.isEmpty || phone == "Not Available") {
+      showError("Phone number not available");
+      return;
+    }
 
-    if (await canLaunchUrl(uri)) {
+    final Uri uri = Uri.parse("https://wa.me/$phone");
+
+    try {
       await launchUrl(
         uri,
         mode: LaunchMode.externalApplication,
       );
-    } else {
-      showError("WhatsApp not installed");
+    } catch (e) {
+      showError("Unable to open WhatsApp");
     }
   }
 
   void showError(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg, style: TextStyle(fontFamily: 'Poppins')),
-        behavior: SnackBarBehavior.floating,
-      ),
+    AppSnackBar.show(
+      context,
+      message: msg,
+      type: SnackType.error,
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +98,7 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    widget.seller["name"],
+                    widget.seller["name"] ?? "Not Available",
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: w * 0.048,
@@ -105,7 +112,7 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
                       Icon(Icons.location_on, size: 16, color: Colors.grey),
                       SizedBox(width: 4),
                       Text(
-                        widget.seller["location"],
+                        widget.seller["location"] ?? "Not Available",
                         style: TextStyle(
                           color: Colors.black54,
                           fontFamily: 'Poppins',
@@ -133,9 +140,9 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
                     icon: Icons.call,
                     color: Colors.green,
                     title: "Call Dealer",
-                    subtitle: widget.seller["phone"],
+                    subtitle: widget.seller["phone"] ?? "Not Available",
                     onTap: () {
-                      callDealer(widget.seller["phone"]);
+                      callDealer(widget.seller["phone"] ?? "Not Available");
                     },
                   ),
 
@@ -146,7 +153,7 @@ class _ContactDealerPageState extends State<ContactDealerPage> {
                     title: "Chat on WhatsApp",
                     subtitle: "Quick response from seller",
                     onTap: () {
-                      openWhatsApp(widget.seller["whatsapp"]);
+                      openWhatsApp(widget.seller["phone"] ?? "");
                     },
                   ),
                 ],

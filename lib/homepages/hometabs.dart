@@ -1,4 +1,4 @@
-import 'package:bikebuyer/page/bikesell.dart';
+import 'package:bikebuyer/seller/bikesell.dart';
 import 'package:bikebuyer/homepages/homepage.dart';
 import 'package:bikebuyer/profilepage/userprofile.dart';
 import 'package:bikebuyer/page/wishlist.dart';
@@ -21,7 +21,7 @@ class _HomeTabsState extends State<HomeTabs> {
   List Pages = [
     HomePage(),
     WishlistPage(),
-    BikeSell(),
+    SellBikeLandingPage(),
     UserProfile(),
   ];
   @override
@@ -48,7 +48,7 @@ class _HomeTabsState extends State<HomeTabs> {
       child: Scaffold(
         body:  Pages[SelectedIndex],
         bottomNavigationBar: Container(
-          height: ScreenHeight*0.07,
+          height: ScreenHeight*0.090,
           decoration: BoxDecoration(
             color: Colors.grey.shade300.withOpacity(0.8),
             borderRadius: BorderRadius.circular(ScreenWidth*0.02),

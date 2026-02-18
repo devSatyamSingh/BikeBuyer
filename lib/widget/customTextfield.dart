@@ -30,8 +30,8 @@ Widget satyamField({
       SizedBox(height: 6),
       Center(
         child: Container(
-          height: 52,
-          width: 375,
+          height: 50,
+          width: 370,
           decoration: BoxDecoration(
             color: Colors.grey.shade400.withAlpha(40),
             borderRadius: BorderRadius.circular(20),
@@ -40,19 +40,20 @@ Widget satyamField({
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
-                child: Icon(icon, color: Colors.deepPurple.shade600),
+                child: Icon(icon, color: Colors.purple.shade600),
               ),
               Expanded(
                 child: TextFormField(
                   controller: controller,
                   keyboardType: keyboard,
                   obscureText: obscure,
-                  cursorColor: Colors.deepPurple,
+                  cursorColor: Colors.purple,
                   maxLength: maxLength,
                   onChanged: onChanged,
                   validator: validator,
                   decoration: InputDecoration(
                     hintText: hint,
+                    hintStyle: TextStyle(fontFamily: 'Poppins'),
                     border: InputBorder.none,
                     counterText: "",
                     suffixIcon: suffix,
@@ -63,7 +64,7 @@ Widget satyamField({
           ),
         ),
       ),
-      SizedBox(height: 22),
+      SizedBox(height: 18),
     ],
   );
 }

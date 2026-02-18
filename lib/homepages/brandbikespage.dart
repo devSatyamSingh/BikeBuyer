@@ -1,10 +1,13 @@
+import 'package:bikebuyer/homepages/bikeditailspagess.dart';
 import 'package:flutter/material.dart';
+import '../modal/vehicalmodel.dart';
+import '../widget/loderanimation.dart';
 import '../widget/pagenavigationanimation.dart';
 import 'bikedetailpage.dart';
 
-class BrandBikesPage extends StatelessWidget {
+class BrandBikesPage extends StatefulWidget {
   final String brandName;
-  final List bikes;
+  final List<VehicleModel> bikes;
 
   const BrandBikesPage({
     super.key,
@@ -13,13 +16,36 @@ class BrandBikesPage extends StatelessWidget {
   });
 
   @override
+  State<BrandBikesPage> createState() => _BrandBikesPageState();
+}
+
+class _BrandBikesPageState extends State<BrandBikesPage> {
+
+  bool isPageLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isPageLoading = false;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
+    if (isPageLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: SegmentLoader(),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: Text(
-          brandName,
+          widget.brandName,
           style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400),
         ),
         toolbarHeight: 60,
@@ -27,7 +53,7 @@ class BrandBikesPage extends StatelessWidget {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: bikes.isEmpty
+      body: widget.bikes.isEmpty
           ? Center(
               child: Text(
                 "No bikes available",
@@ -40,9 +66,9 @@ class BrandBikesPage extends StatelessWidget {
             )
           : ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              itemCount: bikes.length,
+              itemCount: widget.bikes.length,
               itemBuilder: (context, index) {
-                final bike = bikes[index];
+                final bike = widget.bikes[index];
                 return Card(
                   color: Colors.white,
                   elevation: 2,
@@ -95,10 +121,25 @@ class BrandBikesPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(14),
                                 child: AspectRatio(
                                   aspectRatio: 19 / 14,
-                                  child: Image.asset(
-                                    bike["images"][0],
+                                  child: bike.images.isNotEmpty
+                                      ? Image.network(
+                                    bike.images.first,
                                     fit: BoxFit.cover,
-                                  ),
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+
+                                      return const Center(
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: SegmentLoader(),
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (_, __, ___) =>
+                                    const Icon(Icons.image_not_supported),
+                                  )
+                                      : const Icon(Icons.image_not_supported),
                                 ),
                               ),
                             ),
@@ -110,7 +151,7 @@ class BrandBikesPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                bike["name"],
+                                "${bike.brandName} ${bike.model}",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -121,7 +162,7 @@ class BrandBikesPage extends StatelessWidget {
                               ),
                               SizedBox(height: 6),
                               Text(
-                                bike["price"],
+                                "₹${bike.price}",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.green,
@@ -135,7 +176,7 @@ class BrandBikesPage extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     SlidePageRoute(
-                                      page: BikeDetailPage(bike: bike),
+                                      page: BikeDetailPages(bike: bike),
                                     ),
                                   );
                                 },

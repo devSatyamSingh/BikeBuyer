@@ -1,8 +1,14 @@
 import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../homepages/bikedetailpage.dart';
+import '../homepages/bikeditailspagess.dart';
+import '../modal/vehicalmodel.dart';
+import '../widget/app_snackbar.dart';
+import '../widget/loderanimation.dart';
 import '../widget/pagenavigationanimation.dart';
+import '../widget/wishlist_service.dart';
+import 'loginpage.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -13,95 +19,85 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   bool isSearching = false;
+  bool isLoading = true;
   TextEditingController searchController = TextEditingController();
-
-  List<Map<String, String>> wishlist = [
-    {
-      "id": "bike_1",
-      "name": "Hero Splendor Plus",
-      "price": "₹ 92,094",
-      "location": "Ex-showroom, Ayodhya",
-      "img": "assets/images/hero1.webp",
-    },
-    {
-      "id": "bike_2",
-      "name": "Royal Enfield Classic 350",
-      "price": "₹ 3,64,569",
-      "location": "Ex-showroom, Noida",
-      "img": "assets/images/bullet.jpg",
-    },
-    {
-      "id": "bike_3",
-      "name": "Bajaj Pulsar 150",
-      "price": "₹ 1,38,070",
-      "location": "Ex-showroom, Mumbai",
-      "img": "assets/images/pulsar1.png",
-    },
-    {
-      "id": "bike_4",
-      "name": "Yamaha R15 V4",
-      "price": "₹ 1,65,061",
-      "location": "Ex-showroom, Delhi",
-      "img": "assets/images/Rs15.jpg",
-    },
-    {
-      "id": "bike_5",
-      "name": "KTM 350",
-      "price": "₹ 2,35,061",
-      "location": "Ex-showroom, Lucknow",
-      "img": "assets/images/ktm2.webp",
-    },
-  ];
-
-  List<Map<String, String>> filteredWishlist = [];
+  List<VehicleModel> wishlist = [];
+  List<VehicleModel> filteredWishlist = [];
 
   @override
   void initState() {
     super.initState();
-    filteredWishlist = List.from(wishlist);
+    checkLoginAndLoad();
+  }
+
+  Future<void> checkLoginAndLoad() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
+    if (!isLoggedIn) {
+      if (!mounted) return;
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => LoginPage()),
+      );
+      SharedPreferences prefsAfter =
+      await SharedPreferences.getInstance();
+      bool loggedInNow =
+          prefsAfter.getBool("isLoggedIn") ?? false;
+      if (!loggedInNow) {
+        setState(() {
+          isLoading = false;
+        });
+        AppSnackBar.show(
+          context,
+          message: "Please login to view wishlist",
+          type: SnackType.warning,
+        );
+        return;
+      }
+
+    }
+    await loadWishlist();
+  }
+
+  Future<void> loadWishlist() async {
+    setState(() {
+      isLoading = true;
+    });
+    final data = await WishlistService.getWishlist();
+    setState(() {
+      wishlist = data;
+      filteredWishlist = data;
+      isLoading = false;
+    });
   }
 
   void searchWishlist(String query) {
     query = query.toLowerCase().trim();
-
     setState(() {
       if (query.isEmpty) {
         filteredWishlist = List.from(wishlist);
       } else {
         filteredWishlist = wishlist.where((bike) {
-          return bike["name"]!.toLowerCase().contains(query);
+          return ("${bike.brandName} ${bike.model}").toLowerCase().contains(
+            query,
+          );
         }).toList();
       }
     });
   }
 
-  void openBikeDetails(BuildContext context, Map<String, String> bike) {
-    final Map<String, dynamic> fullBike = {
-      "id": bike["id"],
-      "name": bike["name"],
-      "price": bike["price"],
-      "brand": bike["name"]!.split(" ").first,
-      "cc": "150 cc",
-      "km": "45 kmpl",
-      "fuel": "Petrol",
-      "runKm": "8,000 km",
-      "regYear": "2021",
-      "owner": "1st Owner",
-      "rto": "UP32",
-      "location": bike["location"],
-      "mileage": "45 kmpl",
-      "images": [
-        bike["img"],
-        bike["img"],
-        bike["img"],
-        bike["img"],
-        bike["img"],
-      ],
-    };
+  void openBikeDetails(BuildContext context, VehicleModel bike) {
+    Navigator.push(context, SlidePageRoute(page: BikeDetailPages(bike: bike)));
+  }
 
-    Navigator.push(
+  Future<void> removeBike(VehicleModel bike) async {
+    await WishlistService.removeFromWishlist(bike.vehicleId);
+    await loadWishlist();
+
+    AppSnackBar.show(
       context,
-      SlidePageRoute(page: BikeDetailPage(bike: fullBike)),
+      message: "Removed from wishlist",
+      type: SnackType.success,
     );
   }
 
@@ -110,7 +106,6 @@ class _WishlistPageState extends State<WishlistPage> {
     searchController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +121,7 @@ class _WishlistPageState extends State<WishlistPage> {
         elevation: 0,
         titleSpacing: 3,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             if (isSearching) {
               setState(() {
@@ -137,7 +132,7 @@ class _WishlistPageState extends State<WishlistPage> {
             } else {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomeTabs()),
+                MaterialPageRoute(builder: (context) => const HomeTabs()),
               );
             }
           },
@@ -151,9 +146,9 @@ class _WishlistPageState extends State<WishlistPage> {
                   hintText: "Search wishlist bikes...",
                   border: InputBorder.none,
                 ),
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               )
-            : Text(
+            : const Text(
                 "Wishlist",
                 style: TextStyle(
                   color: Colors.black,
@@ -165,7 +160,7 @@ class _WishlistPageState extends State<WishlistPage> {
         actions: [
           if (!isSearching && wishlist.isNotEmpty)
             IconButton(
-              icon: Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline),
               tooltip: "Clear All",
               onPressed: showClearAllDialog,
             ),
@@ -189,134 +184,133 @@ class _WishlistPageState extends State<WishlistPage> {
           ),
         ],
       ),
-      body: wishlist.isEmpty
-          ? const Center(
-              child: Text(
-                "Your wishlist is empty ❤️",
-                style: TextStyle(fontSize: 16, fontFamily: 'Poppins'),
-              ),
-            )
-          : filteredWishlist.isEmpty
-          ? Center(
-              child: Text(
-                "Bike not found 😕",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  color: Colors.grey,
-                ),
-              ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: filteredWishlist.length,
-              itemBuilder: (context, index) {
-                final bike = filteredWishlist[index];
+      body: isLoading
+          ? const SegmentLoader()
+          : RefreshIndicator(
+              color: Colors.purple,
+              onRefresh: loadWishlist,
+              child: wishlist.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "Your wishlist is empty ❤️",
+                        style: TextStyle(fontSize: 16, fontFamily: 'Poppins'),
+                      ),
+                    )
+                  : filteredWishlist.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "Bike not found 😕",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(12),
+                      itemCount: filteredWishlist.length,
+                      itemBuilder: (context, index) {
+                        final bike = filteredWishlist[index];
 
-                return GestureDetector(
-                  onTap: () {
-                    openBikeDetails(context, bike);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: h * 0.0144),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            bike["img"]!,
-                            height: h * 0.083,
-                            width: w * 0.23,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(width: w * 0.025),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                bike["name"]!,
-                                style: TextStyle(
-                                  fontSize: w * 0.038,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
+                        return GestureDetector(
+                          onTap: () => openBikeDetails(context, bike),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: bike.images.isNotEmpty
+                                      ? Image.network(
+                                          bike.images.first,
+                                          height: 70,
+                                          width: 90,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(
+                                                Icons.image_not_supported,
+                                              ),
+                                        )
+                                      : const Icon(Icons.image_not_supported),
                                 ),
-                              ),
-                              SizedBox(height: h * 0.005),
-                              Text(
-                                bike["location"]!,
-                                style: TextStyle(
-                                  fontSize: w * 0.028,
-                                  fontFamily: 'Poppins',
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                              SizedBox(height: h * 0.006),
-                              Text(
-                                bike["price"]!,
-                                style: TextStyle(
-                                  fontSize: w * 0.031,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Icon(Icons.favorite, color: Colors.red),
-                            PopupMenuButton<String>(
-                              onSelected: (value) {
-                                if (value == "delete") {
-                                  setState(() {
-                                    wishlist.removeWhere((item) => item["id"] == bike["id"]);
-                                    filteredWishlist.removeAt(index);
-                                  });
-                                } else if (value == "share") {}
-                              },
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  value: "share",
-                                  child: Row(
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Icon(Icons.share, size: h * 0.022),
-                                      SizedBox(width: w * 0.016),
                                       Text(
-                                        "Share",
-                                        style: TextStyle(fontFamily: 'Poppins'),
+                                        "${bike.brandName} ${bike.model}",
+                                        style: const TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        "${bike.city}, ${bike.state}",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        "₹${bike.price}",
+                                        style: const TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                PopupMenuItem(
-                                  value: "delete",
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.delete, size: h * 0.022),
-                                      SizedBox(width: w * 0.016),
-                                      Text(
-                                        "Remove",
-                                        style: TextStyle(fontFamily: 'Poppins'),
-                                      ),
-                                    ],
-                                  ),
+                                Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    ),
+                                    PopupMenuButton<String>(
+                                      color: Colors.white,
+                                      onSelected: (value) async {
+                                        if (value == "delete") {
+                                          await removeBike(bike);
+                                        }
+                                      },
+                                      itemBuilder: (context) => const [
+                                        PopupMenuItem(
+                                          value: "delete",
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.delete, size: 18),
+                                              SizedBox(width: 7),
+                                              Text(
+                                                "Remove",
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
             ),
     );
   }
@@ -326,62 +320,35 @@ class _WishlistPageState extends State<WishlistPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
+          backgroundColor: Colors.white,
+          title: const Text(
             "Clear Wishlist",
             style: TextStyle(fontFamily: 'Poppins'),
           ),
-          content: Text(
+          content: const Text(
             "Are you sure you want to remove all items from wishlist?",
             style: TextStyle(fontFamily: 'Poppins'),
           ),
           actions: [
             OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                "No",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontFamily: 'Poppins',
-                ),
-              ),
+              onPressed: () => Navigator.pop(context),
+              child: const Text("No"),
             ),
-            SizedBox(width: 7),
             ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  wishlist.clear();
-                  filteredWishlist.clear();
-                });
+              onPressed: () async {
+                await WishlistService.clearWishlist();
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      "Wishlist cleared successfully",
-                      style: TextStyle(fontFamily: 'Poppins'),
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    duration: Duration(seconds: 2),
-                  ),
+                await loadWishlist();
+
+                AppSnackBar.show(
+                  context,
+                  message: "Wishlist cleared successfully",
+                  type: SnackType.success,
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                "Yes",
-                style: TextStyle(fontFamily: 'Poppins', color: Colors.black),
-              ),
+
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+              child: const Text("Yes", style: TextStyle(color: Colors.white)),
             ),
           ],
         );

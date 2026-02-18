@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../homepages/bikedetailpage.dart';
 import '../widget/pagenavigationanimation.dart';
+import 'filter_vehicalpagetab.dart';
 
 class CommuterBikeTab extends StatefulWidget {
   const CommuterBikeTab({super.key});
@@ -92,61 +93,12 @@ class _CommuterBikeTabState extends State<CommuterBikeTab> {
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      body:  ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: bikes.length,
-        itemBuilder: (context, index) {
-          var bike = bikes[index];
-          return GestureDetector(
-            onTap: () {
-              openBikeDetails(context, bike);
-            },
-            child: Container(
-              width: w * 0.57,
-              margin: const EdgeInsets.only(right: 18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 2),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: h * 0.19,
-                    padding: const EdgeInsets.all(10),
-                    child: Image.asset(bike["img"]!, fit: BoxFit.cover),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      bike["name"]!,
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17, fontFamily: 'Poppins',),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                    child: Text(
-                      bike["price"]!,
-                      style: TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Poppins',),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      "View Bikes Details",
-                      style: TextStyle(color: Colors.red, fontSize: 13,fontFamily: 'Poppins',),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+      body: const FilteredVehiclePage(
+        category: "bike",
+        subCategoryName: "Commuter Bike",
       ),
     );
+
   }
 }
 

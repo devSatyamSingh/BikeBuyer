@@ -1,5 +1,4 @@
 
-import 'package:bikebuyer/draweritems/ServicesCenterPage.dart';
 import 'package:bikebuyer/draweritems/finddealerpage.dart';
 import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/draweritems/Electricbikelist.dart';
@@ -8,9 +7,12 @@ import 'package:bikebuyer/draweritems/scooterlist.dart';
 import 'package:bikebuyer/draweritems/superbikelist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../hometabitems/ElectricScooty.dart';
 import '../widget/pagenavigationanimation.dart';
+import 'mysell_list.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -20,6 +22,33 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+
+  String userName = "";
+  bool isLoggedIn = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    bool loginStatus = prefs.getBool("isLoggedIn") ?? false;
+
+    if (loginStatus) {
+      userName = prefs.getString("userName") ?? "";
+      isLoggedIn = true;
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -36,35 +65,61 @@ class _CustomDrawerState extends State<CustomDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.person, size: screenWidth*0.090),
-                ),
-                SizedBox(height: screenHeight*0.012),
-                Text(
-                  "Welcome to BikeBuyer",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                    fontSize: screenWidth*0.033,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  "Buy & Sell Bikes",
-                  style: TextStyle(color: Colors.white70, fontFamily: 'Poppins',),
+                isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 28,
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        isLoggedIn && userName.isNotEmpty
+                            ? userName[0].toUpperCase()
+                            : "?",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.08,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.012),
+                    Text(
+                      isLoggedIn
+                          ? "Hi, $userName"
+                          : "Welcome to BikeBuyer",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Poppins',
+                        fontSize: screenWidth * 0.033,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      isLoggedIn
+                          ? "Happy Buying 🚀"
+                          : "Login & explore premium features",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
           drawerTile(context, "Home", HomeTabs()),
+          drawerTile(context, "My Sell Listings", MySellListingsPage()),
           drawerTile(context, "Bikes", BikeListPage()),
-          drawerTile(context, "Scooters", ScooterListPage()),
+          drawerTile(context, "Scooty", ScooterListPage()),
           drawerTile(context, "Electric Bikes", ElectricBikeLIst()),
           drawerTile(context, "Super Bikes", SuperBikeList()),
-          drawerTile(context, "Find Dealers", Finddealerpage()),
-          drawerTile(context, "Find Services Center", ServicesCenterPage()),
+          drawerTile(context, "Electric Scooty", ElectricScootyTab()),
+          // drawerTile(context, "Find Dealers", Finddealerpage()),
           SizedBox(height: screenHeight*0.015,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth*0.044),

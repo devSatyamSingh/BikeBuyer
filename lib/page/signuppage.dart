@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:bikebuyer/homepages/homepage.dart';
 import 'package:bikebuyer/homepages/hometabs.dart';
 import 'package:bikebuyer/page/loginpage.dart';
 import 'package:bikebuyer/page/otppage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconly/iconly.dart';
 import 'package:country_state_picker/country_state_picker.dart';
 import 'package:country_state_picker/components/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widget/customTextfield.dart';
 import 'package:country_state_picker/country_state_picker.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -16,7 +19,14 @@ import 'package:geocoding/geocoding.dart';
 import '../widget/pagenavigationanimation.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  final String? phone;
+  final bool fromOtp; // 🔥 NEW FLAG
+
+  const SignUpPage({
+    super.key,
+    this.phone,
+    required this.fromOtp,
+  });
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -26,7 +36,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final cityController = TextEditingController();
   final countryController = TextEditingController();
@@ -36,32 +45,40 @@ class _SignUpPageState extends State<SignUpPage> {
   final FocusNode cityFocus = FocusNode();
 
   void checkForm() {
-    if (nameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        phoneController.text.length == 10 &&
-        cityController.text.isNotEmpty) {
-      setState(() {
-        isFormValid = true;
-      });
-    } else {
-      setState(() {
-        isFormValid = false;
-      });
+    final phone = widget.phone ?? phoneController.text;
+
+    final valid = nameController.text.trim().isNotEmpty &&
+        emailController.text.trim().isNotEmpty &&
+        phone.length == 10 &&
+        cityController.text.trim().isNotEmpty;
+
+    setState(() {
+      isFormValid = valid;
+    });
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.phone != null) {
+      phoneController.text = widget.phone!;
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final ScreenWidth = MediaQuery.of(context).size.width;
-    final ScreenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
-          top: ScreenHeight * 0.065,
-          left: ScreenWidth * 0.020,
-          right: ScreenWidth * 0.030,
+          top: screenHeight * 0.065,
+          left: screenWidth * 0.020,
+          right: screenWidth * 0.030,
         ),
         child: Form(
           key: _formKey,
@@ -72,15 +89,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 icon: const Icon(IconlyBold.arrow_left),
                 onPressed: () => Navigator.pop(context),
               ),
-              SizedBox(height: ScreenHeight * 0.002),
+              SizedBox(height: screenHeight * 0.002),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Text(
                   "Create Account",
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: ScreenWidth * 0.047,
-                    fontWeight: FontWeight.w600,
+                    fontSize: screenWidth * 0.047,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -92,11 +109,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     color: Colors.grey.shade600,
-                    fontSize: ScreenWidth * 0.032,
+                    fontSize: screenWidth * 0.032,
                   ),
                 ),
               ),
-              SizedBox(height: ScreenHeight * 0.025),
+              SizedBox(height: screenHeight * 0.025),
               satyamField(
                 label: "Name",
                 hint: "Enter your name",
@@ -124,29 +141,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 keyboard: TextInputType.emailAddress,
                 onChanged: (_) => checkForm(),
                 validator: (v) {
-                  if (!isSubmitted) return null;
-                  if (v == null || v.isEmpty) {
-                    return "Email required";
-                  }
+                  if (v == null || v.isEmpty) return "Email required";
+                  if (!v.contains("@")) return "Enter valid email";
                   return null;
                 },
+
               ),
-              satyamField(
-                label: "Password",
-                hint: "Create a password",
-                icon: IconlyBold.lock,
-                controller: passwordController,
-                obscure: true,
-                onChanged: (_) => checkForm(),
-                validator: (v) {
-                  if (!isSubmitted) return null;
-                  if (v == null || v.isEmpty) {
-                    return "Password required";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: ScreenHeight * 0.016),
+              SizedBox(height: screenHeight * 0.016),
               satyamField(
                 label: "Phone",
                 hint: "Enter your phone",
@@ -193,14 +194,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     keyboardType: TextInputType.text,
                     inputDecoration: InputDecoration(
                       hintText: "Enter your city",
+                      hintStyle: TextStyle(fontFamily: 'Poppins'),
                       suffixIcon: GestureDetector(
                         onTap: () {
                           getCurrentLocation();
                         },
                         child: Icon(Icons.my_location, color: Colors.black87),
                       ),
-                      prefixIcon: Icon(Icons.location_pin, color: Colors.deepPurple),
-
+                      prefixIcon: Icon(
+                        Icons.location_pin,
+                        color: Colors.purple,
+                      ),
                       filled: true,
                       fillColor: Colors.grey.shade100,
 
@@ -243,34 +247,41 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.only(left: 20, top: 5),
                   child: Text(
                     "City required",
-                    style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'Poppins',),
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                    ),
                   ),
                 ),
               SizedBox(height: 20),
               Center(
                 child: GestureDetector(
+                  // onTap: () {
+                  //   setState(() {
+                  //     isSubmitted = true;
+                  //   });
+                  //   if (_formKey.currentState!.validate() &&
+                  //       cityController.text.isNotEmpty) {
+                  //     Navigator.push(
+                  //       context,
+                  //       SlidePageRoute(page: HomeTabs()),
+                  //     );
+                  //   }
+                  // },
                   onTap: () {
-                    setState(() {
-                      isSubmitted = true;
-                    });
-                    if (_formKey.currentState!.validate() &&
-                        cityController.text.isNotEmpty) {
-                      Navigator.push(
-                        context,
-                        SlidePageRoute(page: HomeTabs()),
-                      );
+                    if (_formKey.currentState!.validate()) {
+                      buyerSignup();
                     }
                   },
                   child: Container(
-                    height: ScreenHeight * 0.054,
-                    width: ScreenWidth * 0.80,
+                    height: screenHeight * 0.054,
+                    width: screenWidth * 0.80,
                     decoration: BoxDecoration(
                       color: isFormValid ? null : Colors.grey.shade400,
                       gradient: isFormValid
                           ? LinearGradient(
-                              colors: [
-                                Colors.purple, Colors.deepPurple
-                              ],
+                              colors: [Colors.purple, Colors.deepPurple],
                             )
                           : null,
                       borderRadius: BorderRadius.circular(6),
@@ -280,7 +291,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         "Continue",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: ScreenWidth * 0.048,
+                          fontSize: screenWidth * 0.048,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -288,21 +299,49 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-
-              SizedBox(height: ScreenHeight * 0.005),
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: Text(
-                    'Already have an account? Sign in',
-                    style: TextStyle(color: Colors.black87),
+              SizedBox(height: screenHeight * 0.005),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account?",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          SlidePageRoute(page: LoginPage()),
+                        );
+                      },
+                      child: Container(
+                        height: 28,
+                        width: 72,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: Colors.purple,
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -330,20 +369,15 @@ class _SignUpPageState extends State<SignUpPage> {
     if (permission == LocationPermission.deniedForever) {
       return;
     }
-
-    // Get position
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    // Convert lat lng to address
     List<Placemark> placemarks = await placemarkFromCoordinates(
       position.latitude,
       position.longitude,
     );
 
     Placemark place = placemarks[0];
-
     String city = place.locality ?? "";
     String state = place.administrativeArea ?? "";
 
@@ -352,4 +386,63 @@ class _SignUpPageState extends State<SignUpPage> {
       checkForm();
     });
   }
+
+  Future<void> buyerSignup() async {
+
+    try {
+
+      final response = await http.post(
+        Uri.parse("https://api.bikesbuyer.com/api/user/buyer/signup"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "name": nameController.text.trim(),
+          "phone": widget.phone ?? phoneController.text.trim(),
+          "email": emailController.text.trim(),
+          "city": cityController.text.trim(),
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (data["success"] == true) {
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        // 🔐 SAFE TOKEN SAVE
+        if (data.containsKey("token") && data["token"] != null) {
+          await prefs.setString("token", data["token"]);
+        }
+
+        await prefs.setBool("isLoggedIn", true);
+        await prefs.setString("userName", nameController.text.trim());
+        await prefs.setString(
+          "userPhone",
+          widget.phone ?? phoneController.text.trim(),
+        );
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => HomeTabs()),
+              (route) => false,
+        );
+
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(data["message"] ?? "Signup failed")),
+        );
+      }
+
+    } catch (e) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Something went wrong")),
+      );
+
+    }
+  }
+
+
+
+
+
 }

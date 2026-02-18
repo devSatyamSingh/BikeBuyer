@@ -14,15 +14,6 @@ List<Map<String, dynamic>> applyBikeFilters({
       return false;
     }
 
-    if (filter.ccRanges.isNotEmpty &&
-        !filter.ccRanges.any((cc) => bike["ccValue"] <= cc)) {
-      return false;
-    }
-
-    if (filter.years.isNotEmpty &&
-        !filter.years.contains(bike["year"])) {
-      return false;
-    }
 
     return true;
   }).toList();

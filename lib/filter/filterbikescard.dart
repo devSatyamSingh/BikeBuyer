@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../homepages/bikedetailpage.dart';
+import '../homepages/bikeditailspagess.dart';
+import '../modal/vehicalmodel.dart';
+import '../widget/loderanimation.dart';
 import '../widget/pagenavigationanimation.dart';
 
 class FilteredBikeLargeCard extends StatelessWidget {
-  final Map bike;
+  final VehicleModel bike;
 
   const FilteredBikeLargeCard({super.key, required this.bike});
 
@@ -52,7 +55,27 @@ class FilteredBikeLargeCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                     child: AspectRatio(
                       aspectRatio: 16 / 12,
-                      child: Image.asset(bike["images"][0], fit: BoxFit.cover),
+                      child: bike.images.isNotEmpty
+                          ? Image.network(
+                              bike.images.first,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const SegmentLoader();
+                                  },
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 60,
+                                  ),
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Icon(Icons.image_not_supported, size: 60),
+                            ),
                     ),
                   ),
                 ),
@@ -64,7 +87,7 @@ class FilteredBikeLargeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bike["name"],
+                    "${bike.brandName} ${bike.model}",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -75,7 +98,7 @@ class FilteredBikeLargeCard extends StatelessWidget {
                   ),
                   SizedBox(height: 6),
                   Text(
-                    bike["price"],
+                    "₹${bike.price}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.green,
@@ -88,7 +111,7 @@ class FilteredBikeLargeCard extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        SlidePageRoute(page: BikeDetailPage(bike: bike)),
+                        SlidePageRoute(page: BikeDetailPages(bike: bike)),
                       );
                     },
                     child: Container(

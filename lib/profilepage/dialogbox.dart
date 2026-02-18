@@ -1,84 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:bikebuyer/page/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> showLogoutDialog(BuildContext context) {
+import '../homepages/hometabs.dart';
+import '../page/loginpage.dart';
+import '../widget/app_snackbar.dart';
+
+Future<void> showLogoutDialog(
+    BuildContext context, {
+      required VoidCallback onConfirm,
+    }) async {
   return showDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     builder: (context) {
       return Dialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 32,
-                backgroundColor: Colors.red.withOpacity(0.1),
-                child: Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                  size: 30,
-                ),
-              ),
-              SizedBox(height: 16),
+              Icon(Icons.logout, size: 45, color: Colors.purple),
+              SizedBox(height: 12),
               Text(
-                "Logout",
+                "Logout?",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
                   fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                "Are you sure you want to logout from BikeBuyer?",
+                "Are you sure you want to logout?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  color: Colors.grey,
                   fontFamily: 'Poppins',
-                  color: Colors.black54,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 22),
               Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text("Cancel", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Poppins',)),
+                      child: Text("No"),
                     ),
                   ),
                   SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => LoginPage(),
-                          ),
-                              (route) => false,
-                        );
-                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: Text("Logout", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Poppins',),),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        onConfirm();
+                      },
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
@@ -90,3 +86,30 @@ Future<void> showLogoutDialog(BuildContext context) {
     },
   );
 }
+
+Future<void> logout(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // await prefs.clear();
+
+  await prefs.remove("isLoggedIn");
+  await prefs.remove("token");
+  await prefs.remove("userName");
+  await prefs.remove("userPhone");
+
+  AppSnackBar.show(
+    context,
+    message: "Logged out successfully",
+    type: SnackType.success,
+  );
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (_) => HomeTabs()),
+        (route) => false,
+  );
+}
+
+
+
+

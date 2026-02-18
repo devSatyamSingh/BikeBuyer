@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:provider/provider.dart';
+import '../homepages/location_provider.dart';
+import '../modal/vehicalmodel.dart';
+import '../widget/locationbottomsheet.dart';
 import 'filterbikespage.dart';
 import 'filterlogicpage.dart';
 import 'filtermodel.dart';
 import '../main.dart';
 
-enum FilterSection { budget, brand, engine, year }
+enum FilterSection { budget, brand, city}
 
 class FilterPage extends StatefulWidget {
-  final List<Map<String, dynamic>> allBikes;
+  final List<VehicleModel> allBikes;
 
   const FilterPage({super.key, required this.allBikes});
 
@@ -23,32 +30,12 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
   FilterSection selectedSection = FilterSection.budget;
   TextEditingController brandSearchController = TextEditingController();
   String brandSearchQuery = "";
-  TextEditingController engineSearchController = TextEditingController();
-  String engineQuery = "";
-  TextEditingController yearSearchController = TextEditingController();
-  String yearQuery = "";
+  String? selectedCity;
+  List<String> availableCities = [];
+  TextEditingController citySearchController = TextEditingController();
 
-  List<Map<String, dynamic>> engineRanges = [
-    {"label": "Upto 100 cc", "min": 0, "max": 100},
-    {"label": "100 - 125 cc", "min": 100, "max": 125},
-    {"label": "125 - 150 cc", "min": 125, "max": 150},
-    {"label": "150 - 200 cc", "min": 150, "max": 200},
-    {"label": "200 - 250 cc", "min": 200, "max": 250},
-    {"label": "250 - 500 cc", "min": 250, "max": 500},
-    {"label": "500 - 1000 cc", "min": 500, "max": 1000},
-    {"label": "1000 cc & above", "min": 1000, "max": 5000},
-  ];
 
-  List<Map<String, dynamic>> yearRanges = [
-    {"label": "2016 - 2018", "min": 2016, "max": 2018},
-    {"label": "2018 - 2020", "min": 2018, "max": 2020},
-    {"label": "2020 - 2022", "min": 2020, "max": 2022},
-    {"label": "2022 - 2024", "min": 2022, "max": 2024},
-    {"label": "2024 - 2026", "min": 2024, "max": 2026},
-  ];
 
-  List<int> selectedEngineIndexes = [];
-  List<int> selectedYearIndexes = [];
 
   String formatPrice(int value) {
     if (value >= 100000) {
@@ -75,9 +62,25 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
   }
 
   @override
+  @override
+  void initState() {
+    super.initState();
+    print("TOTAL BIKES RECEIVED: ${widget.allBikes.length}"); // 👈 yeh sahi hai
+
+    availableCities = widget.allBikes
+        .map((e) => e.city ?? "")
+        .where((e) => e.isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final brands = widget.allBikes
-        .map((e) => e["brand"].toString())
+        .map((e) => e.brandName ?? "")
+        .where((e) => e.isNotEmpty)
         .toSet()
         .toList();
     return Scaffold(
@@ -91,20 +94,20 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
       body: Row(
         children: [
           Container(
-            width: 130,
+            width: 110,
             color: Colors.grey.shade100,
             child: Column(
               children: [
                 _menuItem("Budget", FilterSection.budget),
                 _menuItem("Brand", FilterSection.brand),
-                _menuItem("Engine", FilterSection.engine),
-                _menuItem("Year", FilterSection.year),
+                _menuItem("City", FilterSection.city),
+
               ],
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               child: _buildRightContent(brands),
             ),
           ),
@@ -125,8 +128,6 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
                     minPrice = 10000;
                     maxPrice = 900000;
                     selectedBrands.clear();
-                    selectedEngineIndexes.clear();
-                    selectedYearIndexes.clear();
                     sortBy = "";
                   });
                 },
@@ -146,6 +147,48 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
       ),
     );
   }
+
+  Future<void> detectCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled =
+    await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    permission =
+    await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission =
+      await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied)
+        return;
+    }
+
+    if (permission ==
+        LocationPermission.deniedForever) return;
+
+    Position position =
+    await Geolocator.getCurrentPosition(
+        desiredAccuracy:
+        LocationAccuracy.high);
+
+    List<Placemark> placemarks =
+    await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude);
+
+    Placemark place = placemarks.first;
+
+    setState(() {
+      selectedCity = place.locality;
+      citySearchController.text =
+          selectedCity ?? "";
+    });
+  }
+
+
+
 
   Widget _menuItem(String title, FilterSection section) {
     final bool isSelected = selectedSection == section;
@@ -180,13 +223,10 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
         return _budgetUI();
       case FilterSection.brand:
         return _brandUI(brands);
-      case FilterSection.engine:
-        return _engineUI();
-      case FilterSection.year:
-        return _yearUI();
+      case FilterSection.city:
+        return _cityUI();
     }
   }
-
   double valueToY(double value, double height, double min, double max) {
     final percent = (value - min) / (max - min);
     return height * (1 - percent);
@@ -199,139 +239,121 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
       {"label": "3 - 5 Lakh", "min": 300000, "max": 500000},
       {"label": "5 - 9 Lakh", "min": 500000, "max": 900000},
     ];
-    double sliderHeight = 440;
+
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Select Your Budget",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'poppins',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _priceBox(formatPrice(minPrice)),
-                SizedBox(width: 10),
-                Text(
-                  "–",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(width: 10),
-                _priceBox(formatPrice(maxPrice)),
-              ],
-            ),
-          ),
-          SizedBox(height: 24),
-          Center(
-            child: Text(
-              "9 Lakh",
-              style: TextStyle(fontSize: 17, color: Colors.grey),
-            ),
-          ),
-          Center(
-            child: SizedBox(
-              height: sliderHeight,
-              child: RotatedBox(
-                quarterTurns: -1,
-                child: RangeSlider(
-                  min: 10000,
-                  max: 900000,
-                  divisions: 180,
-                  values: RangeValues(minPrice.toDouble(), maxPrice.toDouble()),
-                  activeColor: Colors.purple,
-                  inactiveColor: Colors.grey.shade300,
-                  labels: RangeLabels(
-                    formatPrice(minPrice),
-                    formatPrice(maxPrice),
-                  ),
-                  onChanged: (v) {
-                    setState(() {
-                      minPrice = v.start.round();
-                      maxPrice = v.end.round();
-                    });
-                  },
-                ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 267),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Select Your Budget",
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'poppins',
+                fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-          Center(
-            child: Text(
-              "10k",
-              style: TextStyle(fontSize: 17, color: Colors.grey),
+            SizedBox(height: 12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _priceBox(formatPrice(minPrice)),
+                  SizedBox(width: 10),
+                  Text("–", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  SizedBox(width: 10),
+                  _priceBox(formatPrice(maxPrice)),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 18),
-          Text(
-            "Frequently Used Budget",
-            style: TextStyle(
-              fontSize: 15,
-              fontFamily: 'poppins',
-              fontWeight: FontWeight.w500,
+            SizedBox(height: 30),
+            RangeSlider(
+              min: 10000,
+              max: 900000,
+              divisions: 180,
+              values: RangeValues(minPrice.toDouble(), maxPrice.toDouble()),
+              activeColor: Colors.purple,
+              inactiveColor: Colors.grey.shade300,
+              labels: RangeLabels(
+                formatPrice(minPrice),
+                formatPrice(maxPrice),
+              ),
+              onChanged: (v) {
+                setState(() {
+                  minPrice = v.start.round();
+                  maxPrice = v.end.round();
+                });
+              },
             ),
-          ),
-          SizedBox(height: 12),
-          Column(
-            children: frequentBudgets.map((b) {
-              final bool selected =
-                  minPrice == b["min"] && maxPrice == b["max"];
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    minPrice = b["min"];
-                    maxPrice = b["max"];
-                  });
-                },
-                child: Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? Colors.purple.withOpacity(0.08)
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: selected ? Colors.purple : Colors.grey.shade300,
+
+            SizedBox(height: 40),
+
+            Text(
+              "Frequently Used Budget",
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'poppins',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: 30),
+
+            Column(
+              children: frequentBudgets.map((b) {
+                final bool selected =
+                    minPrice == b["min"] && maxPrice == b["max"];
+
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      minPrice = b["min"];
+                      maxPrice = b["max"];
+                    });
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 13),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? Colors.purple.withOpacity(0.08)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: selected ? Colors.purple : Colors.grey.shade300,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          b["label"],
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'poppins',
+                            fontWeight: FontWeight.w500,
+                            color: selected ? Colors.purple : Colors.black,
+                          ),
+                        ),
+                        if (selected)
+                          const Icon(Icons.check, color: Colors.purple, size: 20),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        b["label"],
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'poppins',
-                          fontWeight: FontWeight.w500,
-                          color: selected ? Colors.purple : Colors.black,
-                        ),
-                      ),
-                      if (selected)
-                        const Icon(Icons.check, color: Colors.purple, size: 20),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+                );
+              }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -399,7 +421,9 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
   //   );
   // }
 
+
   Widget _brandUI(List brands) {
+
     List<String> uniqueBrands = brands.map((e) => e.toString()).toSet().toList()
       ..sort();
 
@@ -479,6 +503,95 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
     );
   }
 
+  Widget _cityUI() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+        Text(
+          "Select City",
+          style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'poppins',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 15),
+
+        // 🔍 GOOGLE PLACE SEARCH
+        GooglePlaceAutoCompleteTextField(
+          textEditingController: citySearchController,
+          googleAPIKey: "AIzaSyDJ7qpCw3pf-zN-fY1DqWZ4HDK0Dmi62C4",
+          debounceTime: 600,
+          countries: ["in"],
+          isLatLngRequired: false,
+          inputDecoration: InputDecoration(
+            hintText: "Search city",
+            prefixIcon: Icon(Icons.search),
+            filled: true,
+            fillColor: Colors.grey.shade100,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          itemClick: (prediction) {
+            setState(() {
+              selectedCity = prediction.description!
+                  .split(",")[0];
+              citySearchController.text = selectedCity!;
+            });
+          },
+          getPlaceDetailWithLatLng: (prediction) {},
+        ),
+
+        SizedBox(height: 20),
+
+        // 📍 CURRENT LOCATION
+        ListTile(
+          leading: Icon(Icons.my_location,
+              color: Colors.purple),
+          title: Text(
+            "Use Current Location",
+            style: TextStyle(
+                fontFamily: 'poppins',
+                fontWeight: FontWeight.w500),
+          ),
+          onTap: () async {
+            await detectCurrentLocation();
+          },
+        ),
+
+        SizedBox(height: 20),
+        if (selectedCity != null && selectedCity!.trim().isNotEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.purple.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.purple),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.location_on,
+                    color: Colors.purple),
+                SizedBox(width: 8),
+                Text(
+                  selectedCity!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'poppins',
+                    color: Colors.purple,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget _brandTile(String brand, String query) {
     final bool selected = selectedBrands.contains(brand);
 
@@ -553,120 +666,6 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
     );
   }
 
-  Widget _engineUI() {
-    final sorted = [...engineRanges];
-
-    sorted.sort((a, b) {
-      final aIndex = engineRanges.indexOf(a);
-      final bIndex = engineRanges.indexOf(b);
-      final aSelected = selectedEngineIndexes.contains(aIndex);
-      final bSelected = selectedEngineIndexes.contains(bIndex);
-
-      if (aSelected && !bSelected) return -1;
-      if (!aSelected && bSelected) return 1;
-      return a["label"].compareTo(b["label"]);
-    });
-    return ListView.builder(
-      itemCount: sorted.length,
-      itemBuilder: (context, i) {
-        final range = sorted[i];
-        final index = engineRanges.indexOf(range);
-        final selected = selectedEngineIndexes.contains(index);
-
-        return InkWell(
-          onTap: () {
-            setState(() {
-              selected
-                  ? selectedEngineIndexes.remove(index)
-                  : selectedEngineIndexes.add(index);
-            });
-          },
-          child: Row(
-            children: [
-              Checkbox(
-                value: selected,
-                activeColor: Colors.purple,
-                onChanged: (v) {
-                  setState(() {
-                    v!
-                        ? selectedEngineIndexes.add(index)
-                        : selectedEngineIndexes.remove(index);
-                  });
-                },
-              ),
-              Expanded(
-                child: Text(
-                  range["label"],
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _yearUI() {
-    final sorted = [...yearRanges];
-    sorted.sort((a, b) {
-      final aIndex = yearRanges.indexOf(a);
-      final bIndex = yearRanges.indexOf(b);
-      final aSelected = selectedYearIndexes.contains(aIndex);
-      final bSelected = selectedYearIndexes.contains(bIndex);
-
-      if (aSelected && !bSelected) return -1;
-      if (!aSelected && bSelected) return 1;
-      return a["label"].compareTo(b["label"]);
-    });
-    return ListView.builder(
-      itemCount: sorted.length,
-      itemBuilder: (context, i) {
-        final range = sorted[i];
-        final index = yearRanges.indexOf(range);
-        final selected = selectedYearIndexes.contains(index);
-        return InkWell(
-          onTap: () {
-            setState(() {
-              selected
-                  ? selectedYearIndexes.remove(index)
-                  : selectedYearIndexes.add(index);
-            });
-          },
-          child: Row(
-            children: [
-              Checkbox(
-                value: selected,
-                activeColor: Colors.purple,
-                onChanged: (v) {
-                  setState(() {
-                    v!
-                        ? selectedYearIndexes.add(index)
-                        : selectedYearIndexes.remove(index);
-                  });
-                },
-              ),
-              Expanded(
-                child: Text(
-                  range["label"],
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void _applyFilters() {
     int safeMinPrice = minPrice;
     int safeMaxPrice = maxPrice;
@@ -677,57 +676,52 @@ class _FilterPageState extends State<FilterPage> with RouteAware {
       safeMaxPrice = temp;
     }
 
-    final List<Map<String, dynamic>> filtered = widget.allBikes.where((bike) {
-      final int price = bike["priceValue"] is int ? bike["priceValue"] : 0;
-      final int cc = bike["ccValue"] is int ? bike["ccValue"] : 0;
-      final int year = bike["year"] is int ? bike["year"] : 0;
-      final String brand = bike["brand"] != null
-          ? bike["brand"].toString()
-          : "";
+    final List<VehicleModel> filtered = widget.allBikes.where((bike) {
 
-      // -------- PRICE --------
+      final int price = bike.price ?? 0;
+
       if (price < safeMinPrice || price > safeMaxPrice) {
         return false;
       }
 
-      // -------- BRAND --------
-      if (selectedBrands.isNotEmpty && !selectedBrands.contains(brand)) {
+      if (selectedBrands.isNotEmpty &&
+          !selectedBrands.contains(bike.brandName)) {
         return false;
       }
 
-      // -------- ENGINE --------
-      if (selectedEngineIndexes.isNotEmpty) {
-        bool engineMatch = false;
+      if (selectedCity != null && selectedCity!.trim().isNotEmpty) {
 
-        for (final index in selectedEngineIndexes) {
-          final r = engineRanges[index];
-          if (cc >= r["min"] && cc <= r["max"]) {
-            engineMatch = true;
-            break;
-          }
+        final selected =
+        selectedCity!.trim().toLowerCase();
+
+        final bikeCity =
+        (bike.city ?? "")
+            .trim()
+            .toLowerCase();
+        final cleanBikeCity =
+        bikeCity.split(",")[0];
+
+        final cleanSelectedCity =
+        selected.split(",")[0];
+
+        if (!cleanBikeCity.contains(cleanSelectedCity)) {
+          return false;
         }
-
-        if (!engineMatch) return false;
       }
 
-      // -------- YEAR --------
-      if (selectedYearIndexes.isNotEmpty) {
-        bool yearMatch = false;
 
-        for (final index in selectedYearIndexes) {
-          final r = yearRanges[index];
-          if (year >= r["min"] && year <= r["max"]) {
-            yearMatch = true;
-            break;
-          }
-        }
-        if (!yearMatch) return false;
-      }
+
       return true;
+
     }).toList();
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => FilteredBikePage(bikes: filtered)),
+      MaterialPageRoute(
+        builder: (_) => FilteredBikePage(bikes: filtered),
+      ),
     );
   }
+
+
 }

@@ -286,10 +286,10 @@ class _BikeDetailPageState extends State<BikeDetailPage> {
             Expanded(
               child:GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    SlidePageRoute(page: SendInquiryPage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   SlidePageRoute(page: SendInquiryPage()),
+                  // );
                 },
                 child: Container(
                   width: 200,

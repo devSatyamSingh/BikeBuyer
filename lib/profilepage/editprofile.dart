@@ -42,50 +42,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
         padding: EdgeInsets.all(w * 0.06),
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(w * 0.0062),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.purple.shade100,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.purple.withOpacity(0.2),
-                    blurRadius: 3,
-                  ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: w * 0.10,
-                backgroundColor: Colors.grey.shade200,
-                child: Text(
-                  nameController.text.isNotEmpty
-                      ? nameController.text[0].toUpperCase()
-                      : "U",
-                  style: TextStyle(
-                    fontSize: w * 0.11,
-                    fontFamily: 'Poppins',
-                    color: Colors.purple,
-                    fontWeight: FontWeight.w400,
-                  ),
+            CircleAvatar(
+              radius: w * 0.11,
+              backgroundColor: Colors.purple.shade100.withAlpha(110),
+              child: Text(
+                nameController.text.isNotEmpty
+                    ? nameController.text[0].toUpperCase()
+                    : "U",
+                style: TextStyle(
+                  fontSize: w * 0.12,
+                  fontFamily: 'Poppins',
+                  color: Colors.purple,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
              SizedBox(height: h*0.033),
             TextField(
               controller: nameController,
+              cursorColor: Colors.purple,
               decoration: InputDecoration(
+                fillColor: Colors.purple.shade100.withAlpha(60),
                 labelText: "Name",
-                labelStyle: TextStyle(fontFamily: 'Poppins',),
+                labelStyle: TextStyle(fontFamily: 'Poppins', color: Colors.purple),
                 filled: true,
               ),
             ),
             SizedBox(height: h*0.020),
             TextField(
               controller: numberController,
+              cursorColor: Colors.purple,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                fillColor: Colors.purple.shade100.withAlpha(60),
                 labelText: "Mobile Number",
-                labelStyle: TextStyle(fontFamily: 'Poppins',),
+                labelStyle: TextStyle(fontFamily: 'Poppins', color: Colors.purple),
                 filled: true,
               ),
             ),
